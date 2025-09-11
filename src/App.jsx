@@ -1,32 +1,28 @@
 import './App.css'
-import { AuthProvider } from "react-oidc-context";
-import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import DashboardPage from "./components/Dashboardpage";
 import CallbackPage from "./components/Callbackpage";
+import { useAuth } from "react-oidc-context";
+import ContainerPrincipal from './components/ContainerPrincipal';
 
 function App() {
 
-  const oidcConfig = {
-    authority: import.meta.env.VITE_KEYCLOAK_AUTHORIRY,
-    client_id: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
-    redirect_uri: import.meta.env.VITE_KEYCLOAK_REDIRECT_URI,
-    response_type: "code",
-    scope: "openid profile email",
-    automaticSilentRenew: true,
-  
-  };
+  const auth = useAuth();
 
   return (
-
-    <AuthProvider {...oidcConfig}>
-      <BrowserRouter>
+    <>
+      {auth.isLoading && <div>Loading...</div>}
+      {!auth.isLoading && <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route path="/callback" element={<CallbackPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route element={<ContainerPrincipal />}>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path="/callback" element={<CallbackPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+          </Route>
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </BrowserRouter>}
+
+    </>
   )
 }
 
