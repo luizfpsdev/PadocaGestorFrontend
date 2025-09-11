@@ -13,14 +13,6 @@ function App() {
     response_type: "code",
     scope: "openid profile email",
     automaticSilentRenew: true,
-    // onSigninCallback: () => {
-    //    console.log(window.location.href);
-    //   //  window.history.replaceState(
-    //   //         {},
-    //   //         document.title,
-    //   //         window.location.pathname
-    //   //     )
-    //   }
   
   };
 
@@ -30,7 +22,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route path="/callback" element={<Navigate to="/dashboard" />} />
+          <Route path="/callback" element={<CallbackPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
       </BrowserRouter>
