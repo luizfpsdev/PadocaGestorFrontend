@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from "react-oidc-context";
+import { WebStorageStateStore } from "oidc-client-ts";
 
 
 const oidcConfig = {
@@ -12,6 +13,9 @@ const oidcConfig = {
   response_type: "code",
   scope: "openid profile email",
   automaticSilentRenew: true,
+  monitorSession: true,
+  userStore: new WebStorageStateStore({ store: window.localStorage }),
+  post_logout_redirect_uri: "http://localhost:5173"
 };
 
 

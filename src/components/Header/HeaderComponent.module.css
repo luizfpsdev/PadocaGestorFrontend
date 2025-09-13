@@ -1,0 +1,60 @@
+
+
+.leftside{
+  
+    /* background-color: red; */
+
+}
+.rightside{
+ 
+    /* background-color: blue; */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-left: 1px solid rgb(234, 230, 230);
+}
+
+/* .rightside:hover{
+    background-color: chocolate;
+} */
+
+.rightside button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px; 
+    border: 3px solid black;
+    width: 144px;
+    margin-right: 10px;
+}
+
+.rightside span{
+    font-size: 0.8em;
+    color: #625e5e;
+    margin-left: 10px;
+}
+
+/* .rightside:hover span{
+       font-size: 2.0em;
+        font-size: 1.2em;
+    color: white;
+    margin-left: 10px;
+} */
+
+.middle{
+    /* background-color: green; */
+    /* width: 100%; */
+}
+
+.header {
+    background-color: #f7f7f7;
+    width: 100%;
+    /* border-bottom: 1px solid rgb(180, 176, 176); */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.CircleUserRound{
+    color: #625e5e;
+}
