@@ -11,7 +11,6 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-left: 1px solid rgb(234, 230, 230);
 }
 
 /* .rightside:hover{
@@ -47,12 +46,13 @@
 }
 
 .header {
-    background-color: #f7f7f7;
+    background-color: white;
     width: 100%;
     /* border-bottom: 1px solid rgb(180, 176, 176); */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 70px;
 }
 
 .CircleUserRound{

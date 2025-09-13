@@ -4,6 +4,7 @@ import DashboardPage from "./components/Dashboardpage";
 import CallbackPage from "./components/Callbackpage";
 import { useAuth } from "react-oidc-context";
 import ContainerPrincipal from './components/ContainerPrincipal';
+import LoadingPage from './Pages/Loadingpage';
 
 function App() {
 
@@ -11,7 +12,6 @@ function App() {
 
   return (
     <>
-      {auth.isLoading && <div>Loading...</div>}
       {!auth.isLoading && <BrowserRouter>
         <Routes>
           <Route element={<ContainerPrincipal />}>
@@ -21,7 +21,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>}
-
+      {(!auth.isAuthenticated && auth.isLoading) && <LoadingPage></LoadingPage>}
     </>
   )
 }

@@ -4,6 +4,8 @@ import { Outlet } from 'react-router-dom';
 import style from './ContainerPrincipal.module.css';
 import HeaderComponent from './Header/HeaderComponent';
 import { LogOut } from 'lucide-react';
+import Sidebar from './Sidebar/Sidebar';
+import Content from './Content/Content';
 
 const ContainerPrincipal = () => {
   const auth = useAuth();
@@ -70,29 +72,14 @@ const ContainerPrincipal = () => {
   return (
     <>
       <div className={style.container}>
-        <div className={style.menus}>
-          <div className={style.menuprincipal}>
-            <div className={style.menuprincipalum}>
-
-            </div >
-            <div className={style.menuprincipaldois}>
-              {auth.isAuthenticated && <button onClick={() => void auth.signoutRedirect()}><LogOut size={18} color='#625e5e' /><span>Sair</span></button>}
-            </div>
-
-          </div>
-        </div>
-        <div className={style.content}>
-          <HeaderComponent>
-          </HeaderComponent>
-          <div className={style.pages}>
-            {auth.isAuthenticated && <Outlet>
-            </Outlet>}
-          </div>
-        </div>
+        <Sidebar></Sidebar>
+        <Content></Content>
       </div>
-
     </>
   );
 };
+
+// {auth.isAuthenticated && <button onClick={() => void auth.signoutRedirect()}><LogOut size={18} color='#625e5e' /><span>Sair</span></button>}
+
 
 export default ContainerPrincipal;

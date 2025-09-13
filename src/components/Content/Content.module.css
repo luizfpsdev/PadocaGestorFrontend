@@ -1,0 +1,11 @@
+.content {
+    width: 100%;
+    overflow: overlay;
+    display: flex;
+    flex-direction: column;
+    background-color: #f7f7f7;
+}
+
+.pages{
+    height: 100%;
+}

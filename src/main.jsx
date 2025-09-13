@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from "react-oidc-context";
 import { WebStorageStateStore } from "oidc-client-ts";
+import { Provider } from "@/components/ui/provider";
 
 
 const oidcConfig = {
@@ -21,8 +22,10 @@ const oidcConfig = {
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider {...oidcConfig}>
-    <StrictMode>
-      <App />
-    </StrictMode>
+    <Provider>
+      <StrictMode>
+        <App />
+      </StrictMode>
+    </Provider>
   </AuthProvider>,
 )
