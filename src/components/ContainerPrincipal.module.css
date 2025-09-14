@@ -27,21 +27,6 @@
     justify-content: flex-start                                                                                                 ;
 }
 
-.menuprincipaldois button{
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    width: 100px;
-    margin-right: 10px;
-    display: flex;
-}
-
-.menuprincipaldois button span{ 
-    font-size: 0.8em;
-    color: #625e5e;
-    margin-left: 10px;                                                                                                                              
-}
-
 .content{
     background-color: white;
     width: 100%;

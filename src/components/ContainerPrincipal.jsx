@@ -72,7 +72,7 @@ const ContainerPrincipal = () => {
   return (
     <>
       <div className={style.container}>
-        <Sidebar></Sidebar>
+        {/* <Sidebar></Sidebar> */}
         <Content></Content>
       </div>
     </>

@@ -11,26 +11,17 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 5px
 }
 
 /* .rightside:hover{
     background-color: chocolate;
 } */
 
-.rightside button{
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    border-radius: 25px; 
-    border: 3px solid black;
-    width: 144px;
-    margin-right: 10px;
-}
 
 .rightside span{
-    font-size: 0.8em;
-    color: #625e5e;
-    margin-left: 10px;
+    /* font-size: 0.8em;
+    color: #625e5e; */
 }
 
 /* .rightside:hover span{
@@ -46,13 +37,12 @@
 }
 
 .header {
-    background-color: white;
     width: 100%;
     /* border-bottom: 1px solid rgb(180, 176, 176); */
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    height: 70px;
+    height: 80px;
 }
 
 .CircleUserRound{

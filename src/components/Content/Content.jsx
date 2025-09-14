@@ -3,6 +3,7 @@ import HeaderComponent from '../Header/HeaderComponent';
 import { useAuth } from "react-oidc-context";
 import { Outlet } from 'react-router-dom';
 import style from './Content.module.css';
+import { Box } from "@chakra-ui/react"
 
 const Content = () => {
 
@@ -11,9 +12,9 @@ const Content = () => {
     return (
         <div className={style.content}>
             <HeaderComponent></HeaderComponent>
-            <div className={style.pages}>
+            <Box bg="bg.muted" className={style.pages}>
                 <Outlet></Outlet>
-            </div>
+            </Box>
         </div>
     );
 };

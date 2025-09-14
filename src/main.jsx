@@ -4,8 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from "react-oidc-context";
 import { WebStorageStateStore } from "oidc-client-ts";
-import { Provider } from "@/components/ui/provider";
-
+import { Provider } from "./components/ui/provider"
 
 const oidcConfig = {
   authority: import.meta.env.VITE_KEYCLOAK_AUTHORIRY,
@@ -20,12 +19,13 @@ const oidcConfig = {
 };
 
 
+
 createRoot(document.getElementById('root')).render(
   <AuthProvider {...oidcConfig}>
     <Provider>
-      <StrictMode>
-        <App />
-      </StrictMode>
+    <StrictMode>
+      <App />
+    </StrictMode>
     </Provider>
   </AuthProvider>,
 )
