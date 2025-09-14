@@ -13,9 +13,8 @@ const HeaderComponent = () => {
     const navigate = useNavigate();
 
     return (
-        <Box bg="Background"  className={style.header}>
-            <Flex align="center" gap={8}>
-                <HStack wrap="wrap" gap="4">
+        <Box bg="Background"  className={style.header} w="100%">
+                <HStack >
                     <Spacer />
                     <Spacer />
                     <Image src="/padoca-logo.png" alt="Logo" boxSize="80px" objectFit="fill" />
@@ -47,7 +46,7 @@ const HeaderComponent = () => {
                     <Separator orientation="vertical" height="4" />
                     {auth.isAuthenticated && <span>Olá, {auth.user?.profile?.email}</span>}
                     {auth.isAuthenticated && (
-                    <Menu.Root positioning={{ placement: "right-start" }} colorPalette="orange" variant="subtle">
+                    <Menu.Root positioning={{ placement: "left-start" }} colorPalette="orange" variant="subtle">
                         <Menu.Trigger rounded="full" focusRing="outside">
                             <Avatar.Root size="sm" variant="solid" colorPalette="orange">
                                 <Avatar.Fallback name={auth.user?.profile?.name} />
@@ -67,8 +66,8 @@ const HeaderComponent = () => {
                             </Menu.Positioner>
                         </Portal>
                     </Menu.Root>)}
+                     <Spacer />
                 </HStack>
-            </Flex>
         </Box>
     );
 };
