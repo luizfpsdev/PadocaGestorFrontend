@@ -4,10 +4,12 @@ import { useAuth } from "react-oidc-context";
 import { ColorModeButton } from '../ui/color-mode';
 import { Tabs, Box, Avatar, Menu, Portal, HStack, Button, Separator, Flex, Spacer } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react"
+import { useNavigate } from 'react-router-dom';
 
 const HeaderComponent = () => {
 
     const auth = useAuth();
+    const navigate = useNavigate();
 
     return (
         <Box bg="Background" >
@@ -25,10 +27,10 @@ const HeaderComponent = () => {
                     <Spacer />
                     <Spacer />
                     <Separator orientation="vertical" height="4" />
-                    <Button variant="ghost">Dashboard</Button>
-                    <Button variant="ghost">Receitas</Button>
-                    <Button variant="ghost">Produtos</Button>
-                    <Button variant="ghost">Pessoal</Button>
+                    <Button variant="ghost" onClick={()=> navigate("/dashboard")}>Dashboard</Button>
+                    <Button variant="ghost" onClick={()=> navigate("/receitas")}>Receitas</Button>
+                    <Button variant="ghost" onClick={()=> navigate("/produtos")}>Produtos</Button>
+                    <Button variant="ghost" onClick={()=> navigate("/pessoal")}>Pessoal</Button>
                     <Separator orientation="vertical" height="4" />
                     <Spacer />
                     <Spacer />

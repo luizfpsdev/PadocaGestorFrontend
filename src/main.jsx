@@ -19,7 +19,6 @@ const oidcConfig = {
 };
 
 
-
 createRoot(document.getElementById('root')).render(
   <AuthProvider {...oidcConfig}>
     <Provider>

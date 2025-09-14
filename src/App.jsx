@@ -18,6 +18,7 @@ function App() {
             <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="/callback" element={<CallbackPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/produtos" element={<LoadingPage />} />
           </Route>
         </Routes>
       </BrowserRouter>}
