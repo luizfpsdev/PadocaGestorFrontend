@@ -5,6 +5,7 @@ import { ColorModeButton } from '../ui/color-mode';
 import { Tabs, Box, Avatar, Menu, Portal, HStack, Button, Separator, Flex, Spacer } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react"
 import { useNavigate } from 'react-router-dom';
+import { LuLogOut,LuFileUser } from "react-icons/lu";
 
 const HeaderComponent = () => {
 
@@ -12,11 +13,12 @@ const HeaderComponent = () => {
     const navigate = useNavigate();
 
     return (
-        <Box bg="Background" >
+        <Box bg="Background"  className={style.header}>
             <Flex align="center" gap={8}>
                 <HStack wrap="wrap" gap="4">
-                    <Image src="/padoca-logo.png" alt="Logo" boxSize="80px" objectFit="fill" />
                     <Spacer />
+                    <Spacer />
+                    <Image src="/padoca-logo.png" alt="Logo" boxSize="80px" objectFit="fill" />
                     <Spacer />
                     <Spacer />
                     <Spacer />
@@ -41,12 +43,11 @@ const HeaderComponent = () => {
                     <Spacer />
                     <Spacer />
                     <Spacer />
-                    <Spacer />
                     <ColorModeButton></ColorModeButton>
                     <Separator orientation="vertical" height="4" />
                     {auth.isAuthenticated && <span>Olá, {auth.user?.profile?.email}</span>}
-                    <div style={{ width: '10px' }}></div>
-                    {auth.isAuthenticated && (<Menu.Root positioning={{ placement: "right-start" }} colorPalette="orange" variant="subtle">
+                    {auth.isAuthenticated && (
+                    <Menu.Root positioning={{ placement: "right-start" }} colorPalette="orange" variant="subtle">
                         <Menu.Trigger rounded="full" focusRing="outside">
                             <Avatar.Root size="sm" variant="solid" colorPalette="orange">
                                 <Avatar.Fallback name={auth.user?.profile?.name} />
@@ -55,8 +56,13 @@ const HeaderComponent = () => {
                         <Portal>
                             <Menu.Positioner >
                                 <Menu.Content>
-                                    <Menu.Item value="profile">Profile</Menu.Item>
-                                    <Menu.Item value="logout" onClick={() => auth.signoutRedirect()}>Logout</Menu.Item>
+                                    <Menu.Item value="profile">
+                                        <LuFileUser/>
+                                        Profile</Menu.Item>
+                                    <Menu.Item value="logout" onClick={() => auth.signoutRedirect()}>
+                                        <LuLogOut/>
+                                        Logout
+                                        </Menu.Item>
                                 </Menu.Content>
                             </Menu.Positioner>
                         </Portal>

@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import DashboardPage from "./components/Dashboardpage";
-import CallbackPage from "./components/Callbackpage";
+import CallbackPage from "./Pages/Callbackpage";
 import { useAuth } from "react-oidc-context";
 import ContainerPrincipal from './components/ContainerPrincipal';
 import LoadingPage from './Pages/Loadingpage';
