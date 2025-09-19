@@ -1,5 +1,5 @@
 import React from 'react';
-import { Breadcrumb } from "@chakra-ui/react"
+import { Breadcrumb,Box } from "@chakra-ui/react"
 
 const DashboardPage = () => {
 
@@ -13,8 +13,9 @@ const DashboardPage = () => {
                     <Breadcrumb.Separator />
                 </Breadcrumb.List>
             </Breadcrumb.Root> */}
-            <h1>Dashboard</h1>
-            <p>Welcome to your dashboard!</p>
+            <Box>
+
+            </Box>
         </>
     );
 };
