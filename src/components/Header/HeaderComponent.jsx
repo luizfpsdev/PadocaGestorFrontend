@@ -17,7 +17,7 @@ const HeaderComponent = () => {
                 <HStack >
                     <Spacer />
                     <Spacer />
-                    <Image src="/padoca-logo.png" alt="Logo" boxSize="80px" objectFit="fill" />
+                    <Image src="/padoca-logo2.png" alt="Logo" boxSize="80px" width="250px" objectFit="fill" />
                     <Spacer />
                     <Spacer />
                     <Spacer />
