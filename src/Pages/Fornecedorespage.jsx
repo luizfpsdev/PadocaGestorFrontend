@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, SimpleGrid, GridItem, Group, Card, Stack, Field, Input, Badge, HStack, Button, Flex, Textarea, Table, Pagination, ButtonGroup, IconButton, Checkbox } from "@chakra-ui/react"
 import CardFuncionarioCadastroSkeleton from '../components/Skeletons/Cardfuncionariocadastroskeleton';
-import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu"
+import { LuChevronLeft, LuChevronRight, LuSearch,LuSquarePen,LuTrash2 } from "react-icons/lu"
 
 
 const FornecedoresPage = () => {
@@ -92,8 +92,9 @@ const FornecedoresPage = () => {
                                 </Group>
                             </Card.Header>
                             <Card.Body>
-                                <Table.Root size="lg" variant="line" interactive colorPalette="orange" striped>
-                                    <Table.Header>
+                                <Table.ScrollArea height="500px">
+ <Table.Root size="lg" variant="line" interactive colorPalette="orange" stickyHeader>
+                                    <Table.Header >
                                         <Table.Row >
                                             <Table.ColumnHeader>
                                                 <Checkbox.Root
@@ -117,7 +118,7 @@ const FornecedoresPage = () => {
                                             <Table.ColumnHeader>Endereço</Table.ColumnHeader>
                                             <Table.ColumnHeader>Telefone</Table.ColumnHeader>
                                             <Table.ColumnHeader>Cnpj</Table.ColumnHeader>
-                                            <Table.ColumnHeader textAlign="end">Ações</Table.ColumnHeader>
+                                            <Table.ColumnHeader >Ações</Table.ColumnHeader>
                                         </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
@@ -146,11 +147,20 @@ const FornecedoresPage = () => {
                                                 <Table.Cell>{item.endereco}</Table.Cell>
                                                 <Table.Cell>{item.telefone}</Table.Cell>
                                                 <Table.Cell>{item.cnpj}</Table.Cell>
-                                                <Table.Cell textAlign="end">{item.price}</Table.Cell>
+                                                <Table.Cell >
+                                                    <HStack>
+                                                        <IconButton size="sm" colorPalette="blue" variant={'subtle'}><LuSquarePen></LuSquarePen></IconButton>
+                                                        <IconButton size="sm" colorPalette="red" variant="solid">
+                                                            <LuTrash2></LuTrash2>
+                                                        </IconButton>
+                                                    </HStack>
+                                                </Table.Cell>
                                             </Table.Row>
                                         ))}
                                     </Table.Body>
                                 </Table.Root>
+                                </Table.ScrollArea>
+                               
 
 
                             </Card.Body>
