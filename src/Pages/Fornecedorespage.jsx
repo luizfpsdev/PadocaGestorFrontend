@@ -94,7 +94,7 @@ const FornecedoresPage = () => {
                                 </Group>
                             </Card.Header>
                             <Card.Body>
-                                <Table.ScrollArea height="500px">
+                                <Table.ScrollArea height="500px" rounded="md">
                                     <Table.Root size="lg" variant="line" interactive colorPalette="orange" stickyHeader>
                                         <Table.Header >
                                             <Table.Row >
