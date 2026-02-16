@@ -38,7 +38,7 @@ const FornecedoresPage = () => {
             {!loading && <CardFuncionarioCadastroSkeleton />}
             {loading && (<Box p={4}>
                 <SimpleGrid columns={10} gap={4}>
-                    <GridItem colSpan={3}>
+                    <GridItem colSpan={2}>
                         <Card.Root >
                             <Card.Header>
                                 Cadastro de Fornecedores
@@ -83,7 +83,7 @@ const FornecedoresPage = () => {
                             </Card.Footer>
                         </Card.Root>
                     </GridItem>
-                    <GridItem colSpan={7}>
+                    <GridItem colSpan={8}>
                         <Card.Root>
                             <Card.Header>
                                 <Group attached w="full" maxW="sm">

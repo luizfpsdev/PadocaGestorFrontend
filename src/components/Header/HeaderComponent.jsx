@@ -28,12 +28,12 @@ const HeaderComponent = () => {
                     <Spacer />
                     <Spacer />
                     <Separator orientation="vertical" height="4" />
-                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/dashboard")} rounded="full"><LuLayoutDashboard></LuLayoutDashboard>Dashboard</Button>
-                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/receitas")} rounded="full"><LuBookOpenText/>Receitas</Button>
-                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/produtos")} rounded="full"><LuBox/> Produtos</Button>
-                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/ingredientes")} rounded="full"><LuChefHat/> Ingredientes</Button>
-                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/pessoal")} rounded="full"><LuUsers/> Pessoal</Button>
-                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/fornecedores")} rounded="full"><LuBoxes/> Fornecedores</Button>
+                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/dashboard")} rounded="l2"><LuLayoutDashboard></LuLayoutDashboard>Dashboard</Button>
+                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/receitas")} rounded="l2"><LuBookOpenText/>Receitas</Button>
+                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/produtos")} rounded="l2"><LuBox/> Produtos</Button>
+                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/ingredientes")} rounded="l2"><LuChefHat/> Ingredientes</Button>
+                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/pessoal")} rounded="l2"><LuUsers/> Pessoal</Button>
+                    <Button className={style.actionbutton} variant="ghost" onClick={()=> navigate("/fornecedores")} rounded="l2"><LuBoxes/> Fornecedores</Button>
                     <Separator orientation="vertical" height="4" />
                     <Spacer />
                     <Spacer />

@@ -6,7 +6,7 @@ const CardFuncionarioCadastroSkeleton = () => (
     <>
         <Box p={4}>
             <SimpleGrid columns={10} gap={4}>
-                <GridItem colSpan={3}>
+                <GridItem colSpan={2}>
                     <Card.Root >
                         <Card.Header>
                             <SkeletonText noOfLines={1} width="45%" />
@@ -45,7 +45,7 @@ const CardFuncionarioCadastroSkeleton = () => (
                         </Card.Footer>
                     </Card.Root>
                 </GridItem>
-                <GridItem colSpan={7}>
+                <GridItem colSpan={8}>
                     <Card.Root>
                         <Card.Header />
                         <Card.Body>
