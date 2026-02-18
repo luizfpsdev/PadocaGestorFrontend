@@ -12,6 +12,7 @@ const CallbackPage = () => {
             navigate("/dashboard", { replace: true });
         }
     }, [auth.isAuthenticated]);
+    
     return <div>Processando login...</div>;
 };
 
