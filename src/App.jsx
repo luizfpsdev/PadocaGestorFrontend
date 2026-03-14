@@ -21,13 +21,14 @@ function App() {
         <Routes>
           <Route element={<ContainerPrincipal />}>
             <Route path="/" element={<Navigate to="/dashboard" />} />
-            <Route path="/callback" element={<CallbackPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/receitas" element={<LoadingPage />} />
             <Route path="/produtos" element={<ProductsPage/>} />
             <Route path="/fornecedores" element={<FornecedoresPage/>} />
-            <Route path="/ingredientes" element={<IngredientesPage />} />
-            <Route path="/receitas" element={<LoadingPage />} />
-            <Route path="/pessoal" element={<LoadingPage />} />
+            <Route path="/custos" element={<IngredientesPage />} />
+            <Route path="/comparativo" element={<LoadingPage />} />
+            <Route path="/lucro" element={<LoadingPage />} />
+            <Route path="/callback" element={<CallbackPage />} />
           </Route>
         </Routes>
       </BrowserRouter>}
@@ -37,3 +38,4 @@ function App() {
 }
 
 export default App
+

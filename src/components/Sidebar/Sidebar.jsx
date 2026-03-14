@@ -1,9 +1,8 @@
 import React from "react";
-import style from "./Sidebar.module.css";
-import { Box } from "@chakra-ui/react";
 import { useContext } from "react";
 import { ThemeContext } from "../Theme/ThemeContext";
 import { useAuth } from "react-oidc-context";
+import { useNavigate } from 'react-router-dom';
 
 const IcoLogout = ({ sz, cl }) => (
   <svg
@@ -242,7 +241,10 @@ const IcoMoon = ({ sz, cl }) => (
 );
 
 const Sidebar = () => {
+
   const { theme, toggleTheme, darkMode } = useContext(ThemeContext);
+  const navigate = useNavigate();
+  const auth = useAuth();
 
   const C = { ...theme };
 
@@ -617,80 +619,10 @@ const Sidebar = () => {
     { key: "lucro", label: "Lucratividade", Icon: IcoChart },
   ];
 
-  const auth = useAuth();
-
-  const sidebar = {
-    width: 220,
-    background: theme.surface,
-    borderRight: `1px solid ${theme.border}`,
-    display: "flex",
-    flexDirection: "column",
-    padding: "24px 14px",
-    position: "sticky",
-    top: 0,
-    height: "100vh",
-  };
-
-  const sidebarLogoutBtn = {
-    marginTop: 6,
-    height: 36,
-    borderRadius: 10,
-    border: `1px solid ${theme.border2}`,
-    background: theme.border,
-    color: theme.text,
-    fontSize: 12,
-    fontWeight: 700,
-    fontFamily: "'Mulish',sans-serif",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  };
 
   const [page, setPage] = React.useState("dashboard");
 
   return (
-    // <aside className={sidebar}>
-    //   <nav>
-    //     <div></div>
-    //     <div>
-    //       <ul style={{ listStyle: "none", padding: 0 }}>
-    //         <li>
-    //           <a href="/dashboard">Dashboard</a>
-    //         </li>
-    //         <li>
-    //           <a href="/receitas">Receitas</a>
-    //         </li>
-    //         <li>
-    //           <a href="/produtos">Produtos</a>
-    //         </li>
-    //         <li>
-    //           <a href="/comparativo">Comparativo</a>
-    //         </li>
-    //         <li>
-    //           <a href="/custos">Custos Op.</a>
-    //         </li>
-    //           <li>
-    //           <a href="/fornecedores">Fornecedores</a>
-    //         </li>
-    //           <li>
-    //           <a href="/lucro">Lucro</a>
-    //         </li>
-    //       </ul>
-    //     </div>
-    //     <div>
-    //       {auth.isAuthenticated && (
-    //         <button
-    //           style={sidebarLogoutBtn}
-    //           onClick={() => void auth.signoutRedirect()}
-    //         >
-    //           <IcoLogout sz={14} cl={theme.text} />
-    //           <span>Logout</span>
-    //         </button>
-    //       )}
-    //     </div>
-    //   </nav>
-    // </aside>
 
     <aside style={S.sidebar}>
       <div style={S.brand}>
@@ -706,7 +638,7 @@ const Sidebar = () => {
             <button
               key={key}
               style={{ ...S.navBtn, ...(on ? S.navOn : {}) }}
-              onClick={() => setPage(key)}
+              onClick={() => {setPage(key), navigate(key)}}
             >
               <Icon sz={17} cl={on ? C.teal : C.muted} />
               <span>{label}</span>
@@ -776,7 +708,7 @@ const Sidebar = () => {
         </button>
         <button style={S.sidebarLogoutBtn} onClick={() => void auth.signoutRedirect()}>
           <IcoLogout sz={14} cl={C.text} />
-          <span>Logout</span>
+          <span>Sair</span>
         </button>
       </div>
     </aside>

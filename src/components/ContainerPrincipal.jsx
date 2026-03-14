@@ -3,9 +3,7 @@ import { useAuth } from "react-oidc-context";
 import { Outlet } from 'react-router-dom';
 import style from './ContainerPrincipal.module.css';
 import HeaderComponent from './Header/HeaderComponent';
-import { LogOut } from 'lucide-react';
 import Sidebar from './Sidebar/Sidebar';
-import Content from './Content/Content';
 
 const ContainerPrincipal = () => {
   const auth = useAuth();
@@ -71,7 +69,7 @@ const ContainerPrincipal = () => {
     <>
       <div className={style.container}>
         <Sidebar></Sidebar>
-        <div>
+        <div className={style.boxConteudo}>
           <HeaderComponent></HeaderComponent>
           <Outlet></Outlet>
         </div>
