@@ -11,11 +11,13 @@ import IngredientesPage from './Pages/Ingredientespage';
 
 function App() {
 
-  const auth = useAuth();
+    const auth = useAuth();
 
   return (
     <>
-      {!auth.isLoading && <BrowserRouter>
+      {
+      !auth.isLoading && 
+      <BrowserRouter>
         <Routes>
           <Route element={<ContainerPrincipal />}>
             <Route path="/" element={<Navigate to="/dashboard" />} />

@@ -11,13 +11,11 @@ const ContainerPrincipal = () => {
   const auth = useAuth();
 
   const handleLogout = () => {
-    alert("Sessão deslogada no Keycloak");
     auth.removeUser();
     window.location.href = "/";
   };
 
   const handleLogoutExpiracao = () => {
-    alert("Sessão expirada  no Keycloak");
     auth.removeUser();
     window.location.href = "/";
   };
@@ -72,14 +70,15 @@ const ContainerPrincipal = () => {
   return (
     <>
       <div className={style.container}>
-        {/* <Sidebar></Sidebar> */}
-        <Content></Content>
+        <Sidebar></Sidebar>
+        <div>
+          <HeaderComponent></HeaderComponent>
+          <Outlet></Outlet>
+        </div>
       </div>
     </>
   );
 };
-
-// {auth.isAuthenticated && <button onClick={() => void auth.signoutRedirect()}><LogOut size={18} color='#625e5e' /><span>Sair</span></button>}
 
 
 export default ContainerPrincipal;
