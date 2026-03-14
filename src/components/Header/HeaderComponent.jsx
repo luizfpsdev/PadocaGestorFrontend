@@ -1,26 +1,14 @@
-import style from "./HeaderComponent.module.css";
 import { useAuth } from "react-oidc-context";
-import {
-  Box,
-  Avatar,
-  Menu,
-  Portal,
-  HStack,
-  Button,
-  Separator,
-  Spacer,
-} from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Avatar, Menu } from "@chakra-ui/react";
+
 import { useContext, React } from "react";
 import { ThemeContext } from "../Theme/ThemeContext";
-import { div } from "framer-motion/client";
 
 const HeaderComponent = () => {
   const auth = useAuth();
-  const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
 
-  const topBar = {
+  let topBar = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -32,6 +20,24 @@ const HeaderComponent = () => {
     zIndex: 5,
   };
 
+  let topBarTitle = {
+    color: theme.text,
+    fontFamily: "'Bricolage Grotesque',sans-serif",
+    fontWeight: 700,
+    fontSize: 18,
+    letterSpacing: 0.5,
+  };
+
+  let profileEmail = {
+    color: theme.muted,
+    fontSize: 12,
+    fontWeight: 600,
+    maxWidth: 220,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  };
+
   const menuProfile = {
     display: "flex",
     justifyContent: "space-between",
@@ -39,11 +45,11 @@ const HeaderComponent = () => {
   };
   return (
     <div style={topBar}>
-      <div>Delícias do Trigo</div>
+      <div style={topBarTitle}>Delícias do Trigo</div>
       <div style={menuProfile}>
         {auth.isAuthenticated && (
-          <div style={{marginRight:"10px"}}>
-            <span>Olá, {auth.user?.profile?.email}</span>
+          <div style={{ marginRight: "10px" }}>
+            <span style={profileEmail}>Olá, {auth.user?.profile?.email}</span>
           </div>
         )}
         {auth.isAuthenticated && (
