@@ -309,6 +309,7 @@ const useStyle = () => {
       height: 28,
       color: theme.muted,
       fontSize: 13,
+      cursor: "pointer",
     },
     modalBody: { padding: "20px 22px", overflow: "auto", flex: 1 },
     inp: {
