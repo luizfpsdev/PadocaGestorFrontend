@@ -54,17 +54,9 @@ const HeaderComponent = () => {
         )}
         {auth.isAuthenticated && (
           <div>
-            <Menu.Root
-              positioning={{ placement: "bottom-start" }}
-              colorPalette="orange"
-              variant="subtle"
-            >
-              <Menu.Trigger rounded="full" focusRing="outside">
-                <Avatar.Root size="sm" variant="subtle" colorPalette="orange">
-                  <Avatar.Fallback name={auth.user?.profile?.name} />
-                </Avatar.Root>
-              </Menu.Trigger>
-            </Menu.Root>
+            <Avatar.Root size="sm" variant="subtle" colorPalette="orange" style={{backgroundColor:"orange"}}>
+              <Avatar.Fallback name={auth.user?.profile?.name} color="white"/>
+            </Avatar.Root>
           </div>
         )}
       </div>

@@ -22,12 +22,12 @@ const oidcConfig = {
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider {...oidcConfig}>
-  <Provider>
-    <ThemeProvider>
-      <StrictMode>
-        <App />
-      </StrictMode>
-    </ThemeProvider>
-  </Provider>,
-  </AuthProvider>,
+    <Provider>
+      <ThemeProvider>
+        <StrictMode>
+          <App />
+        </StrictMode>
+      </ThemeProvider>
+    </Provider>
+  </AuthProvider>
 );
