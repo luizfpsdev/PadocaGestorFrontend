@@ -270,7 +270,7 @@ const useStyle = () => {
     overlay: {
       position: "fixed",
       inset: 0,
-      background: "rgba(0,0,0,.82)",
+      background: "rgba(15, 23, 42, 0.4)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -385,11 +385,18 @@ const useStyle = () => {
       justifyContent: "space-between",
       alignItems: "center",
     },
-    headerStyle : {
-    marginBottom: "28px",
-    width: "80%",
-    padding: "22px",
-  }
+    headerStyle: {
+      marginBottom: "28px",
+      width: "80%",
+      padding: "22px",
+    },
+    footerModal: {
+      display: "flex",
+      gap: 10,
+      justifyContent: "flex-end",
+      marginTop: 20,
+      padding: "18px 22px",
+    },
   };
 
   return { S, theme };
