@@ -6,10 +6,10 @@ import ContainerPrincipal from './components/ContainerPrincipal';
 import LoadingPage from './Pages/Loadingpage';
 import FornecedoresPage from './Pages/Fornecedorespage';
 import ProductsPage from './Pages/Productspage';
-import IngredientesPage from './Pages/Ingredientespage';
 import ReceitasPage from './Pages/Receitaspage';
 import ComparativoPage from './Pages/Comparativopage';
 import DashboardPage from './Pages/Dashboardpage';
+import CustosOperacionaisPage from './Pages/CustosOperacionaispage';
 
 function App() {
 
@@ -27,7 +27,7 @@ function App() {
             <Route path="/receitas" element={<ReceitasPage />} />
             <Route path="/produtos" element={<ProductsPage/>} />
             <Route path="/fornecedores" element={<FornecedoresPage/>} />
-            <Route path="/custos" element={<IngredientesPage />} />
+            <Route path="/custos" element={<CustosOperacionaisPage />} />
             <Route path="/comparativo" element={<ComparativoPage />} />
             <Route path="/lucro" element={<LoadingPage />} />
             <Route path="/callback" element={<CallbackPage />} />
