@@ -1,7 +1,8 @@
 import { useState } from "react";
-import HeaderPage from "../components/HeaderPages";
-import useStyle from "../components/Hooks/UseStyle";
-import Modal from "../components/Modal";
+import HeaderPage from "../../components/HeaderPages";
+import useStyle from "../../components/Hooks/UseStyle";
+import Modal from "../../components/Modal";
+import FormularioFornecedor from "./FormularioFornecedor";
 
 const FornecedoresPage = () => {
     
@@ -35,7 +36,7 @@ const FornecedoresPage = () => {
           onClose={() => setOpenModal(false)}
           wide
         >
-          <p>Conteúdo do modal de novo fornecedor</p>
+          <FormularioFornecedor></FormularioFornecedor>
         </Modal>
       )}
     </div>

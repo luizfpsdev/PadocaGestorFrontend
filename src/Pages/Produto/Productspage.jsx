@@ -1,7 +1,7 @@
 import { useState } from "react";
-import HeaderPage from "../components/HeaderPages";
-import useStyle from "../components/Hooks/UseStyle";
-import Modal from "../components/Modal";
+import HeaderPage from "../../components/HeaderPages";
+import useStyle from "../../components/Hooks/UseStyle";
+import Modal from "../../components/Modal";
 
 const Productspage = () => {
   const { S, theme } = useStyle();

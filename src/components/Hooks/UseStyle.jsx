@@ -1,5 +1,6 @@
 import { useContext, React } from "react";
 import { ThemeContext } from "../Theme/ThemeContext";
+import { input } from "framer-motion/client";
 
 const useStyle = () => {
   const { theme } = useContext(ThemeContext);
@@ -331,6 +332,7 @@ const useStyle = () => {
       fontWeight: 700,
       fontSize: 13,
       fontFamily: "'Mulish',sans-serif",
+      cursor: "pointer",
     },
     btnOutline: {
       background: "transparent",
@@ -372,15 +374,6 @@ const useStyle = () => {
       padding: "48px 20px",
       fontSize: 14,
     },
-    profileEmail: {
-      color: theme.muted,
-      fontSize: 12,
-      fontWeight: 600,
-      maxWidth: 220,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-    },
     menuProfile: {
       display: "flex",
       justifyContent: "space-between",
@@ -398,6 +391,16 @@ const useStyle = () => {
       marginTop: 20,
       padding: "18px 22px",
     },
+    inputLabel: {
+      color: theme.muted,
+      fontSize: 10,
+      fontWeight: 700,
+      letterSpacing: 1.5,
+      textTransform: "uppercase",
+      marginBottom: 6,
+      display: "block",
+    },
+
   };
 
   return { S, theme };
