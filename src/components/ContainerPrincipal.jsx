@@ -60,7 +60,7 @@ const ContainerPrincipal = () => {
 
         handleLogout();
       }
-    }, 2000);
+    }, 200000);
 
     return () => clearInterval(interval);
   }, [auth?.user]);
