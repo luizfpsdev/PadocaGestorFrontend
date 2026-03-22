@@ -15,6 +15,8 @@ const Productspage = () => {
     categoria: "0",
     fornecedor: "0",
     tipoPreco: 1,
+    markup: "",
+    preco: "",
   });
 
   const handleSubmit = (e) => {
