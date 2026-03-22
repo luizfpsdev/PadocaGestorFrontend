@@ -2,6 +2,7 @@ import { useState } from "react";
 import HeaderPage from "../../components/HeaderPages";
 import useStyle from "../../components/Hooks/UseStyle";
 import Modal from "../../components/Modal";
+import FormularioProduto from "./FormularioProduto";
 
 const Productspage = () => {
   const { S, theme } = useStyle();
@@ -34,7 +35,7 @@ const Productspage = () => {
       <div>
         {openModal && (
           <Modal title="Novo Produto" onClose={() => setOpenModal(false)} wide>
-            <p>Conteúdo do modal de novo produto</p>
+            <FormularioProduto />
           </Modal>
         )}
       </div>

@@ -1,6 +1,5 @@
 import { useContext, React } from "react";
 import { ThemeContext } from "../Theme/ThemeContext";
-import { input } from "framer-motion/client";
 
 const useStyle = () => {
   const { theme } = useContext(ThemeContext);

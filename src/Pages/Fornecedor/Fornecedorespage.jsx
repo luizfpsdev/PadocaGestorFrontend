@@ -36,7 +36,7 @@ const FornecedoresPage = () => {
           onClose={() => setOpenModal(false)}
           wide
         >
-          <FormularioFornecedor></FormularioFornecedor>
+          <FormularioFornecedor />
         </Modal>
       )}
     </div>
