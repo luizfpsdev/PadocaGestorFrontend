@@ -15,8 +15,11 @@ const Productspage = () => {
     categoria: "0",
     fornecedor: "0",
     tipoPreco: 1,
-    markup: "",
-    preco: "",
+    markup: 2,
+    preco: 0.0,
+    precoIngrediente: 0.0,
+    unidadeMedida: 0,
+    ingrediente: "",
   });
 
   const handleSubmit = (e) => {
@@ -36,7 +39,7 @@ const Productspage = () => {
         }}
       >
         <HeaderPage
-          eyebrow="GestÃ£o"
+          eyebrow="Gestão"
           title="Produtos"
           right={
             <div style={{ display: "flex", gap: 8 }}>

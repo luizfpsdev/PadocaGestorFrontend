@@ -2,7 +2,8 @@ import React from "react";
 import useStyle from "../../components/Hooks/UseStyle";
 
 const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
-  const { S } = useStyle();
+  const { S,theme } = useStyle();
+
 
   const categorias = [
     { id: 0, nome: "Selecione a categoria" },
@@ -10,6 +11,16 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
     { id: 2, nome: "Doce" },
     { id: 3, nome: "Salgado" },
     { id: 4, nome: "Massas" },
+  ];
+
+  const unidadesMedida = [
+    { id: 0, nome: "Selecione a unidade de medida" },
+    { id: 1, nome: "Kg" },
+    { id: 2, nome: "g" },
+    { id: 3, nome: "L" },
+    { id: 4, nome: "ml" },
+    { id: 5, nome: "Unidade" },
+    { id: 6, nome: "Duzia" },
   ];
 
   const fornecedores = [{ id: 0, nome: "Selecione o fornecedor" }];
@@ -28,6 +39,22 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
       tipoPreco,
       markup: tipoPreco === 1 ? prev.markup : "",
       preco: tipoPreco === 2 ? prev.preco : "",
+    }));
+  };
+
+  const handleMarkupChange = (e) => {
+    const { value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      markup: parseFloat(value) || 0,
+    }));
+  };
+
+  const handlePrecoChange = (e) => {
+    const { value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      preco: parseFloat(value) || 0,
     }));
   };
 
@@ -60,7 +87,6 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
             name="descricao"
             value={formData.descricao}
             onChange={handleChange}
-            required
           />
         </div>
         <br />
@@ -145,7 +171,7 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
           </div>
           <br />
           {formData.tipoPreco === 1 && (
-            <div style={{width:"49%"}}>
+            <div style={{ width: "49%" }}>
               <label style={S.inputLabel} htmlFor="markup">
                 Markup (x)
               </label>
@@ -154,12 +180,14 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
                 style={S.inp}
                 type="number"
                 name="markup"
+                step="0.01"
                 value={formData.markup}
+                onChange={handleMarkupChange}
               />
             </div>
           )}
           {formData.tipoPreco === 2 && (
-            <div style={{width:"49%"}}>
+            <div style={{ width: "49%" }}>
               <label style={S.inputLabel} htmlFor="preco">
                 Preco de venda (R$)
               </label>
@@ -169,10 +197,68 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
                 type="number"
                 name="preco"
                 value={formData.preco}
+                onChange={handlePrecoChange}
+                step="0.01"
               />
             </div>
           )}
         </div>
+        <br />
+        {/*campos ingredientes*/}
+        <label style={S.inputLabel} htmlFor="ingredientes">
+          Ingredientes
+        </label>
+        <div
+          style={{
+            display: "flex",
+            gap: 10,
+          }}
+        >
+          <div style={{width:"60%"}}> 
+            <input
+              id="ingrediente"
+              style={S.inp}
+              type="text"
+              name="ingrediente"
+              value={formData.ingrediente || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <select
+              id="unidadeMedida"
+              style={S.inp}
+              name="unidadeMedida"
+              value={formData.unidadeMedida || ""}
+              onChange={handleChange}
+            >
+            {unidadesMedida.map((unidade) => (
+              <option key={unidade.id} value={unidade.id}>
+                {unidade.nome}
+              </option>
+            ))}
+              </select>
+          </div>
+          <div>
+            <input
+              id="precoIngrediente"
+              style={S.inp}
+              type="number"
+              name="precoIngrediente"
+              value={formData.precoIngrediente || 0.0}
+              mask="currency"
+              onChange={handleChange}
+              step="0.10"
+            />
+          </div>
+          
+        </div>
+        <br></br>
+        <div style={{ display: "flex", gap: 14, padding: "12px 16px", background: theme.bg, borderRadius: 10, fontSize: 12 }}>
+        <span style={{ color:theme.muted }}>Custo Ing: <span style={{ color: theme.text }}>{50}</span></span>
+        <span style={{ color: theme.muted }}>Preço Venda: <span style={{ color: theme.teal }}>{50}</span></span>
+        <span style={{ color: theme.muted }}>Margem: <span style={{ color: 50 > 30 ? theme.green : 50> 15 ? theme.amber : theme.rose, fontWeight: 700 }}>5.0%</span></span>
+      </div>
       </form>
     </div>
   );
