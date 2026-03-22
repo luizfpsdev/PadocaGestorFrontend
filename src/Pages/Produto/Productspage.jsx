@@ -4,9 +4,23 @@ import useStyle from "../../components/Hooks/UseStyle";
 import Modal from "../../components/Modal";
 import FormularioProduto from "./FormularioProduto";
 
+const PRODUCT_FORM_ID = "produto-form";
+
 const Productspage = () => {
   const { S, theme } = useStyle();
   const [openModal, setOpenModal] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: "",
+    descricao: "",
+    categoria: "0",
+    fornecedor: "0",
+    tipoPreco: 1,
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Dados do produto:", formData);
+  };
 
   return (
     <>
@@ -20,7 +34,7 @@ const Productspage = () => {
         }}
       >
         <HeaderPage
-          eyebrow="Gestão"
+          eyebrow="GestÃ£o"
           title="Produtos"
           right={
             <div style={{ display: "flex", gap: 8 }}>
@@ -34,8 +48,18 @@ const Productspage = () => {
       </div>
       <div>
         {openModal && (
-          <Modal title="Novo Produto" onClose={() => setOpenModal(false)} wide>
-            <FormularioProduto />
+          <Modal
+            title="Novo Produto"
+            onClose={() => setOpenModal(false)}
+            formId={PRODUCT_FORM_ID}
+            wide
+          >
+            <FormularioProduto
+              formId={PRODUCT_FORM_ID}
+              formData={formData}
+              setFormData={setFormData}
+              onSubmit={handleSubmit}
+            />
           </Modal>
         )}
       </div>

@@ -255,7 +255,8 @@ const useStyle = () => {
     },
     toggleBtn: {
       background: "transparent",
-      border: `1px solid ${theme.border}`,
+      border: `1px solid`,
+      borderColor: theme.border,
       borderRadius: 8,
       padding: "7px 16px",
       color: theme.muted,

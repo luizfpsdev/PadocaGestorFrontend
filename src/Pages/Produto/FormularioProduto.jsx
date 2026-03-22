@@ -1,9 +1,8 @@
 import React from "react";
 import useStyle from "../../components/Hooks/UseStyle";
 
-const FormularioProduto = (onSubmit) => {
-  const { S, theme } = useStyle();
-  const [tipoPreco, setTipoPreco] = React.useState(1);
+const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
+  const { S } = useStyle();
 
   const categorias = [
     {
@@ -12,7 +11,7 @@ const FormularioProduto = (onSubmit) => {
     },
     {
       id: 1,
-      nome: "Pão",
+      nome: "PÃ£o",
     },
     {
       id: 2,
@@ -35,11 +34,6 @@ const FormularioProduto = (onSubmit) => {
     },
   ];
 
-  const [formData, setFormData] = React.useState({
-    nome: "",
-    descricao: "",
-  });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -48,20 +42,15 @@ const FormularioProduto = (onSubmit) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Dados do fornecedor:", formData);
-  };
-
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form id={formId} onSubmit={onSubmit}>
         <div>
           <label htmlFor="nome" style={S.inputLabel}>
             Nome*
           </label>
           <input
-            style={{ ...S.inp }}
+            style={S.inp}
             type="text"
             name="nome"
             value={formData.nome}
@@ -69,21 +58,21 @@ const FormularioProduto = (onSubmit) => {
             required
           />
         </div>
-        <br></br>
+        <br />
         <div>
- <label htmlFor="descricao" style={S.inputLabel}>
-          Descrição
-        </label>
-        <input
-          style={S.inp}
-          type="text"
-          name="descricao"
-          value={formData.descricao}
-          onChange={handleChange}
-          required
-        />
+          <label htmlFor="descricao" style={S.inputLabel}>
+            Descrição
+          </label>
+          <input
+            style={S.inp}
+            type="text"
+            name="descricao"
+            value={formData.descricao}
+            onChange={handleChange}
+            required
+          />
         </div>
-  <br></br>
+        <br />
         <div
           style={{
             display: "flex",
@@ -95,7 +84,12 @@ const FormularioProduto = (onSubmit) => {
             <label style={S.inputLabel} htmlFor="categoria">
               Categoria
             </label>
-            <select style={S.inp} name="categoria" onChange={handleChange}>
+            <select
+              style={S.inp}
+              name="categoria"
+              value={formData.categoria}
+              onChange={handleChange}
+            >
               {categorias.map((categoria) => (
                 <option key={categoria.id} value={categoria.id}>
                   {categoria.nome}
@@ -107,7 +101,12 @@ const FormularioProduto = (onSubmit) => {
             <label style={S.inputLabel} htmlFor="fornecedor">
               Fornecedor
             </label>
-            <select style={S.inp} name="fornecedor" onChange={handleChange}>
+            <select
+              style={S.inp}
+              name="fornecedor"
+              value={formData.fornecedor}
+              onChange={handleChange}
+            >
               {fornecedores.map((fornecedor) => (
                 <option key={fornecedor.id} value={fornecedor.id}>
                   {fornecedor.nome}
@@ -116,28 +115,42 @@ const FormularioProduto = (onSubmit) => {
             </select>
           </div>
         </div>
-        <br></br>
+        <br />
         <div>
- <label style={S.inputLabel} htmlFor="tipoPreco">
-          Tipo preço
-        </label>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 20,
-          }}
-          name="tipoPreco"
-        >
-          <button style={{ ...S.toggleBtn,...(tipoPreco === 1?S.toggleOn:{}), width: "100%" }} onClick={()=> setTipoPreco(1)}>
-            Markup automático
-          </button>
-          <button style={{ ...S.toggleBtn,...(tipoPreco === 2?S.toggleOn:{}), width: "100%" }} onClick={()=> setTipoPreco(2)}>
-            Preço Manual
-          </button>
+          <label style={S.inputLabel} htmlFor="tipoPreco">
+            Tipo preço
+          </label>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 20,
+            }}
+          >
+            <button
+              style={{
+                ...S.toggleBtn,
+                ...(formData.tipoPreco === 1 ? S.toggleOn : {}),
+                width: "100%",
+              }}
+              onClick={() => setFormData((prev) => ({ ...prev, tipoPreco: 1 }))}
+              type="button"
+            >
+              Markup automático
+            </button>
+            <button
+              style={{
+                ...S.toggleBtn,
+                ...(formData.tipoPreco === 2 ? S.toggleOn : {}),
+                width: "100%",
+              }}
+              onClick={() => setFormData((prev) => ({ ...prev, tipoPreco: 2 }))}
+              type="button"
+            >
+              Preço Manual
+            </button>
+          </div>
         </div>
-        </div>
-       
       </form>
     </div>
   );

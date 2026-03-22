@@ -1,7 +1,7 @@
 import React from "react";
 import useStyle from "./Hooks/UseStyle";
 
-const Modal = ({ title, onClose,onSave, children, wide }) => {
+const Modal = ({ title, onClose, children, wide, formId }) => {
   const { S } = useStyle();
 
   return (
@@ -23,7 +23,7 @@ const Modal = ({ title, onClose,onSave, children, wide }) => {
           <button style={S.btnOutline} onClick={onClose}>
             Cancelar
           </button>
-          <button style={S.btnPrimary} onClick={onSave}>
+          <button style={S.btnPrimary} type="submit" form={formId}>
             Salvar
           </button>
         </div>
