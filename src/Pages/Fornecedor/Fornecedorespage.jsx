@@ -14,6 +14,8 @@ const FornecedoresPage = () => {
     endereco: "",
     observacao: "",
     cnpj: "",
+    uf:"",
+    cidade:"",
   });
 
   const FORM_ID = "fornecedor-form";
