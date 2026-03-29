@@ -7,6 +7,25 @@ import FormularioReceita from "./FormularioReceita";
 const ReceitasPage = () => {
   const { S, theme } = useStyle();
   const [openModal, setOpenModal] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: "",
+    categoria: 0,
+    unidade: "",
+    rendimento: "",
+    tipoPreco: 1,
+    markup: "",
+    preco: "",
+    descricao: "",
+    produtos: [],
+    fotos: [],
+  });
+
+  const formId = "receita-form";
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Dados da receita:", formData);
+  }
 
   return (
 
@@ -32,7 +51,7 @@ const ReceitasPage = () => {
       />
       {openModal && (
         <Modal title="Nova Receita" onClose={() => setOpenModal(false)} wide>
-          <FormularioReceita onClose={() => setOpenModal(false)} />
+          <FormularioReceita  onClose={() => setOpenModal(false)} formData={formData} setFormData={setFormData} formId={formId} onSubmit={handleSubmit} />
         </Modal>
       )}
     </div>
