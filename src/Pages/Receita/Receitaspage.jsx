@@ -16,6 +16,7 @@ const ReceitasPage = () => {
     markup: "",
     preco: "",
     descricao: "",
+    modoPreparo: "",
     produtos: [],
     fotos: [],
   });
