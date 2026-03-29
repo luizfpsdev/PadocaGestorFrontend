@@ -26,10 +26,9 @@ const ReceitasPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Dados da receita:", formData);
-  }
+  };
 
   return (
-
     <div
       style={{
         backgroundColor: theme.bg,
@@ -51,8 +50,22 @@ const ReceitasPage = () => {
         }
       />
       {openModal && (
-        <Modal title="Nova Receita" onClose={() => setOpenModal(false)} wide>
-          <FormularioReceita  onClose={() => setOpenModal(false)} formData={formData} setFormData={setFormData} formId={formId} onSubmit={handleSubmit} />
+        <Modal
+          title="Nova Receita"
+          onClose={() => {
+            setOpenModal(false);
+            setFormData({});
+          }}
+          wide={true}
+          formId={formId}
+        >
+          <FormularioReceita
+            onClose={() => setOpenModal(false)}
+            formData={formData}
+            setFormData={setFormData}
+            formId={formId}
+            onSubmit={handleSubmit}
+          />
         </Modal>
       )}
     </div>

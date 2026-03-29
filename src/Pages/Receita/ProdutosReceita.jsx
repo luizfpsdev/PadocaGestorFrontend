@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import useStyle from "../../components/Hooks/UseStyle";
 import formaterReal from "../../components/Utils/formaterReal";
 
@@ -19,6 +19,8 @@ const criarLinhaProduto = () => ({
 
 const ProdutosReceita = ({ formData, setFormData }) => {
   const { S, theme } = useStyle();
+  const [dropdownAbertoId, setDropdownAbertoId] = useState(null);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     if ((formData.produtos || []).length === 0) {
@@ -28,6 +30,20 @@ const ProdutosReceita = ({ formData, setFormData }) => {
       }));
     }
   }, [formData.produtos, setFormData]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownAbertoId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const atualizarLinha = (id, campo, valor) => {
     setFormData((prev) => ({
@@ -77,6 +93,7 @@ const ProdutosReceita = ({ formData, setFormData }) => {
           : item,
       ),
     }));
+    setDropdownAbertoId(null);
   };
 
   return (
@@ -117,32 +134,23 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                 <input
                   style={{
                     ...S.inp,
-                    borderRadius: 14,
                     paddingRight: 42,
                     borderColor: produtoSelecionado ? theme.border2 : theme.border,
                   }}
                   type="text"
                   placeholder="Pesquise um produto"
                   value={item.busca || ""}
+                  onFocus={() => setDropdownAbertoId(item.id)}
                   onChange={(e) => {
                     atualizarLinha(item.id, "busca", e.target.value);
                     atualizarLinha(item.id, "produtoId", "");
+                    setDropdownAbertoId(item.id);
                   }}
                 />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: 14,
-                    transform: "translateY(-50%)",
-                    color: theme.muted,
-                    fontSize: 12,
-                    pointerEvents: "none",
-                  }}
-                >
-                </div>
-                {(item.busca || "") && !produtoSelecionado && (
+          
+                {dropdownAbertoId === item.id && !produtoSelecionado && (
                   <div
+                    ref={dropdownRef}
                     style={{
                       position: "absolute",
                       top: "calc(100% + 6px)",
@@ -150,9 +158,9 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                       right: 0,
                       background: theme.surface,
                       border: `1px solid ${theme.border}`,
-                      borderRadius: 14,
+                      borderRadius: 10,
                       overflow: "hidden",
-                      zIndex: 10,
+                      zIndex: 999,
                       boxShadow: "0 18px 32px rgba(0,0,0,.24)",
                       maxHeight: 220,
                       overflowY: "auto",
@@ -181,8 +189,8 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                           <span
                             style={{
                               color: theme.text,
-                              fontSize: 14,
-                              fontWeight: 600,
+                              fontSize: 12,
+                             
                             }}
                           >
                             {produto.nome}
@@ -191,7 +199,6 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                             style={{
                               color: theme.muted,
                               fontSize: 12,
-                              fontFamily: "'JetBrains Mono',monospace",
                               whiteSpace: "nowrap",
                             }}
                           >
@@ -216,7 +223,6 @@ const ProdutosReceita = ({ formData, setFormData }) => {
               <input
                 style={{
                   ...S.inp,
-                  borderRadius: 14,
                   textAlign: "center",
                 }}
                 type="number"

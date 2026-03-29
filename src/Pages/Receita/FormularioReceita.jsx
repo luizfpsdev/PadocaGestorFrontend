@@ -10,14 +10,6 @@ const FormularioReceita = ({ formId, formData, setFormData, onSubmit }) => {
   const { S, theme } = useStyle();
   const [tab, setTab] = React.useState(1);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   return (
     <div>
       <form id={formId} onSubmit={onSubmit}>
@@ -63,11 +55,19 @@ const FormularioReceita = ({ formId, formData, setFormData, onSubmit }) => {
             Produtos
           </button>
         </div>
-        <div style={{ ...S.card, padding: "10px 12px" }}>
-          {tab === 1 && (<DadosReceita formData={formData} setFormData={setFormData} />)}
-          {tab === 2 && (<DescricaoReceita formData={formData} setFormData={setFormData} />)}
-          {tab === 3 && (<FotosReceita formData={formData} setFormData={setFormData} />)}
-          {tab === 4 && (<ProdutosReceita formData={formData} setFormData={setFormData} />)}
+        <div style={{ ...S.card, padding: "10px 12px", minHeight: "400px" }}>
+          {tab === 1 && (
+            <DadosReceita formData={formData} setFormData={setFormData} />
+          )}
+          {tab === 2 && (
+            <DescricaoReceita formData={formData} setFormData={setFormData} />
+          )}
+          {tab === 3 && (
+            <FotosReceita formData={formData} setFormData={setFormData} />
+          )}
+          {tab === 4 && (
+            <ProdutosReceita formData={formData} setFormData={setFormData} />
+          )}
         </div>
         <br></br>
         <div style={{ ...S.card, padding: "10px 12px" }}>
@@ -106,7 +106,6 @@ const FormularioReceita = ({ formId, formData, setFormData, onSubmit }) => {
                 <div
                   style={{
                     color: s.c,
-                    fontFamily: "monospace",
                     fontWeight: 700,
                     fontSize: 13,
                   }}

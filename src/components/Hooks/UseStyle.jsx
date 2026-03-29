@@ -312,7 +312,7 @@ const useStyle = () => {
       fontSize: 13,
       cursor: "pointer",
     },
-    modalBody: { padding: "20px 22px", overflow: "auto", flex: 1 },
+    modalBody: { padding: "20px 22px", flex: 1 },
     inp: {
       width: "100%",
       padding: "9px 12px",
