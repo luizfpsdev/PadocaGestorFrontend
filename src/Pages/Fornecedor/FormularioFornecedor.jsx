@@ -4,13 +4,32 @@ import useStyle from "../../components/Hooks/UseStyle";
 const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
   const { S, theme } = useStyle();
 
-  console.log(formData);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const formatCPF = (value) => {
+    value = value.replace(/\D/g, ""); // remove tudo que não é número
+    value = value.slice(0, 11); // limita a 11 dígitos
+
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+    return value;
+  };
+
+  const handleCNPJChange = (e) => {
+    const { value } = e.target;
+    const formattedValue = formatCPF(value);
+
+    setFormData((prev) => ({
+      ...prev,
+      cnpj: formattedValue,
     }));
   };
 
@@ -32,6 +51,19 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
         </div>
 
         <div>
+          <label style={S.inputLabel} htmlFor="email">
+            E-mail
+          </label>
+          <input
+            style={S.inp}
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div>
           <br></br>
           <div style={{ display: "flex", gap: 20 }}>
             <div style={{ width: "50%" }}>
@@ -41,9 +73,10 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
               <input
                 style={S.inp}
                 type="text"
-                name="cnjp"
-                value={formData.email}
-                onChange={handleChange}
+                name="cnpj"
+                value={formData.cnpj}
+                onChange={handleCNPJChange}
+                placeholder="000.000.000-00"
                 required
               />
             </div>
@@ -61,7 +94,6 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
             </div>
           </div>
         </div>
-
         <div>
           <br></br>
           <label style={S.inputLabel} htmlFor="endereco">

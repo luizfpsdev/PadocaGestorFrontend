@@ -13,6 +13,7 @@ const FornecedoresPage = () => {
     telefone: "",
     endereco: "",
     observacao: "",
+    cnpj: "",
   });
 
   const FORM_ID = "fornecedor-form";
@@ -21,8 +22,6 @@ const FornecedoresPage = () => {
         e.preventDefault();
         console.log('Dados do fornecedor:', formData);
     };
-
-    console.log(formData)
 
   return (
     <div
