@@ -13,7 +13,8 @@ const produtosDisponiveis = [
 const criarLinhaProduto = () => ({
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
   produtoId: "",
-  quantidade: "",
+  busca: "",
+  quantidade: 0,
 });
 
 const ProdutosReceita = ({ formData, setFormData }) => {
@@ -63,6 +64,21 @@ const ProdutosReceita = ({ formData, setFormData }) => {
   const getProdutoSelecionado = (produtoId) =>
     produtosDisponiveis.find((produto) => produto.id === produtoId);
 
+  const selecionarProduto = (linhaId, produto) => {
+    setFormData((prev) => ({
+      ...prev,
+      produtos: (prev.produtos || []).map((item) =>
+        item.id === linhaId
+          ? {
+              ...item,
+              produtoId: produto.id,
+              busca: `${produto.nome} - ${formaterReal(produto.preco)}/${produto.unidade}`,
+            }
+          : item,
+      ),
+    }));
+  };
+
   return (
     <div>
       <div
@@ -83,6 +99,9 @@ const ProdutosReceita = ({ formData, setFormData }) => {
           const produtoSelecionado = getProdutoSelecionado(item.produtoId);
           const quantidade = parseFloat(item.quantidade) || 0;
           const custo = produtoSelecionado ? produtoSelecionado.preco * quantidade : 0;
+          const produtosFiltrados = produtosDisponiveis.filter((produto) =>
+            produto.nome.toLowerCase().includes((item.busca || "").toLowerCase()),
+          );
 
           return (
             <div
@@ -94,27 +113,110 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                 alignItems: "center",
               }}
             >
-              <select
-                style={{
-                  ...S.inp,
-                  borderRadius: 12,
-                  appearance: "auto",
-                }}
-                value={item.produtoId}
-                onChange={(e) => atualizarLinha(item.id, "produtoId", e.target.value)}
-              >
-                <option value="">Selecione um produto</option>
-                {produtosDisponiveis.map((produto) => (
-                  <option key={produto.id} value={produto.id}>
-                    {produto.nome} — {formaterReal(produto.preco)}/{produto.unidade}
-                  </option>
-                ))}
-              </select>
+              <div style={{ position: "relative" }}>
+                <input
+                  style={{
+                    ...S.inp,
+                    borderRadius: 14,
+                    paddingRight: 42,
+                    borderColor: produtoSelecionado ? theme.border2 : theme.border,
+                  }}
+                  type="text"
+                  placeholder="Pesquise um produto"
+                  value={item.busca || ""}
+                  onChange={(e) => {
+                    atualizarLinha(item.id, "busca", e.target.value);
+                    atualizarLinha(item.id, "produtoId", "");
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: 14,
+                    transform: "translateY(-50%)",
+                    color: theme.muted,
+                    fontSize: 12,
+                    pointerEvents: "none",
+                  }}
+                >
+                </div>
+                {(item.busca || "") && !produtoSelecionado && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "calc(100% + 6px)",
+                      left: 0,
+                      right: 0,
+                      background: theme.surface,
+                      border: `1px solid ${theme.border}`,
+                      borderRadius: 14,
+                      overflow: "hidden",
+                      zIndex: 10,
+                      boxShadow: "0 18px 32px rgba(0,0,0,.24)",
+                      maxHeight: 220,
+                      overflowY: "auto",
+                    }}
+                  >
+                    {produtosFiltrados.length > 0 ? (
+                      produtosFiltrados.map((produto) => (
+                        <button
+                          key={produto.id}
+                          type="button"
+                          onClick={() => selecionarProduto(item.id, produto)}
+                          style={{
+                            width: "100%",
+                            padding: "12px 14px",
+                            border: "none",
+                            borderBottom: `1px solid ${theme.border}`,
+                            background: "transparent",
+                            textAlign: "left",
+                            cursor: "pointer",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            gap: 12,
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: theme.text,
+                              fontSize: 14,
+                              fontWeight: 600,
+                            }}
+                          >
+                            {produto.nome}
+                          </span>
+                          <span
+                            style={{
+                              color: theme.muted,
+                              fontSize: 12,
+                              fontFamily: "'JetBrains Mono',monospace",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {formaterReal(produto.preco)}/{produto.unidade}
+                          </span>
+                        </button>
+                      ))
+                    ) : (
+                      <div
+                        style={{
+                          padding: "10px 12px",
+                          color: theme.muted,
+                        }}
+                      >
+                        Nenhum produto encontrado
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
 
               <input
                 style={{
                   ...S.inp,
-                  borderRadius: 12,
+                  borderRadius: 14,
                   textAlign: "center",
                 }}
                 type="number"
@@ -136,7 +238,9 @@ const ProdutosReceita = ({ formData, setFormData }) => {
               <button
                 type="button"
                 onClick={() => removerLinha(item.id)}
-               style={S.closeBtn}
+                style={{
+                  ...S.closeBtn,
+                }}
               >
                 {"\u2715"}
               </button>
@@ -144,14 +248,13 @@ const ProdutosReceita = ({ formData, setFormData }) => {
           );
         })}
       </div>
-<br />
+      <br />
       <button
         type="button"
         onClick={adicionarLinha}
-        style = {{
-              ...S.toggleBtn,
-             
-            }}
+        style={{
+          ...S.toggleBtn,
+        }}
       >
         + Adicionar Produto
       </button>
