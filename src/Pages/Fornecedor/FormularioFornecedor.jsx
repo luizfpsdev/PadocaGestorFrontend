@@ -1,75 +1,95 @@
-import React from 'react';
-import useStyle from '../../components/Hooks/UseStyle';
+import React from "react";
+import useStyle from "../../components/Hooks/UseStyle";
 
-const FormularioFornecedor = () => {
+const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
+  const { S, theme } = useStyle();
 
-    const {S,theme} = useStyle();
+  console.log(formData);
 
-    const [formData, setFormData] = React.useState({
-        nome: '',
-        email: '',
-        telefone: '',
-        endereco: '',
-        observacao: ''
-    });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Dados do fornecedor:', formData);
-    };
-
-    return (
-        <div className="formulario-fornecedor">
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="nome" style={S.inputLabel}>Nome*</label>
-                <input  style={{...S.inp}}
-                    type="text"
-                    name="nome"
-                    value={formData.nome}
-                    onChange={handleChange}
-                    required
-                />
-                <label htmlFor="cnpj" style={S.inputLabel}>Cnpj</label>
-                <input style={S.inp}
-                    type="text"
-                    name="cnjp"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                /> 
-                <label style={S.inputLabel} htmlFor='telefone'>Telefone</label>
-                <input style={S.inp}
-                    type="tel"
-                    name="telefone"
-                    value={formData.telefone}
-                    onChange={handleChange}
-                />
-                <label style={S.inputLabel} htmlFor='endereco'>Endereço</label>
-                <input style={S.inp}
-                    type="text"
-                    name="endereco"
-                    value={formData.endereco}
-                    onChange={handleChange}
-                />
-                <label style={S.inputLabel} htmlFor='observacao'>Observação</label>
-                <input style={S.inp}
-                    type="textarea"
-                    name="observacao"
-                    value={formData.observacao}
-                    placeholder='Opcional'
-                    onChange={handleChange}
-                />
-            </form>
+  return (
+    <div className="formulario-fornecedor">
+      <form id={formId} onSubmit={onSubmit}>
+        <div>
+          <label htmlFor="nome" style={S.inputLabel}>
+            Nome*
+          </label>
+          <input
+            style={{ ...S.inp }}
+            type="text"
+            name="nome"
+            value={formData.nome}
+            onChange={handleChange}
+            required
+          />
         </div>
-    );
+
+        <div>
+          <br></br>
+          <div style={{ display: "flex", gap: 20 }}>
+            <div style={{ width: "50%" }}>
+              <label htmlFor="cnpj" style={S.inputLabel}>
+                Cnpj
+              </label>
+              <input
+                style={S.inp}
+                type="text"
+                name="cnjp"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div style={{ width: "50%" }}>
+              <label style={S.inputLabel} htmlFor="telefone">
+                Telefone
+              </label>
+              <input
+                style={S.inp}
+                type="tel"
+                name="telefone"
+                value={formData.telefone}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <br></br>
+          <label style={S.inputLabel} htmlFor="endereco">
+            Endereço
+          </label>
+          <input
+            style={S.inp}
+            type="text"
+            name="endereco"
+            value={formData.endereco}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <br></br>
+          <label style={S.inputLabel} htmlFor="observacao">
+            Observação
+          </label>
+          <textarea
+            style={{ ...S.inp, height: "100px", resize: "vertical" }}
+            name="observacao"
+            value={formData.observacao}
+            onChange={handleChange}
+          />
+        </div>
+      </form>
+    </div>
+  );
 };
 
 export default FormularioFornecedor;

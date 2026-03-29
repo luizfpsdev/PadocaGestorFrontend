@@ -5,9 +5,24 @@ import Modal from "../../components/Modal";
 import FormularioFornecedor from "./FormularioFornecedor";
 
 const FornecedoresPage = () => {
-    
   const { S, theme } = useStyle();
   const [openModal, setOpenModal] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: "",
+    email: "",
+    telefone: "",
+    endereco: "",
+    observacao: "",
+  });
+
+  const FORM_ID = "fornecedor-form";
+
+   const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('Dados do fornecedor:', formData);
+    };
+
+    console.log(formData)
 
   return (
     <div
@@ -34,9 +49,15 @@ const FornecedoresPage = () => {
         <Modal
           title="Novo Fornecedor"
           onClose={() => setOpenModal(false)}
-          wide
+          wide = {false}
+          formId={FORM_ID}
         >
-          <FormularioFornecedor />
+          <FormularioFornecedor 
+            formId={FORM_ID}
+            formData={formData}
+            setFormData={setFormData}
+            onSubmit={handleSubmit}
+          />
         </Modal>
       )}
     </div>

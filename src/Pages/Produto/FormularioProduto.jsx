@@ -209,6 +209,7 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
                 style={S.inp}
                 type="number"
                 name="preco"
+                min={0}
                 value={formData.preco}
                 onChange={handlePrecoChange}
                 step="0.01"
