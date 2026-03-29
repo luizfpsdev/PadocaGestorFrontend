@@ -1,9 +1,9 @@
 import React from "react";
 import useStyle from "../../components/Hooks/UseStyle";
+import formaterReal from "../../components/Utils/formaterReal";
 
 const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
-  const { S,theme } = useStyle();
-
+  const { S, theme } = useStyle();
 
   const categorias = [
     { id: 0, nome: "Selecione a categoria" },
@@ -24,6 +24,19 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
   ];
 
   const fornecedores = [{ id: 0, nome: "Selecione o fornecedor" }];
+
+  const margin = () => {
+    const custo = formData.precoIngrediente;
+
+    const venda =
+      formData.tipoPreco === 1 ? formData.markup * custo : formData.preco;
+
+    if (!venda || venda === 0) return 0;
+
+    const margem = ((venda - custo) / venda) * 100;
+
+    return Number(margem.toFixed(2));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -214,7 +227,7 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
             gap: 10,
           }}
         >
-          <div style={{width:"60%"}}> 
+          <div style={{ width: "60%" }}>
             <input
               id="ingrediente"
               style={S.inp}
@@ -232,12 +245,12 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
               value={formData.unidadeMedida || ""}
               onChange={handleChange}
             >
-            {unidadesMedida.map((unidade) => (
-              <option key={unidade.id} value={unidade.id}>
-                {unidade.nome}
-              </option>
-            ))}
-              </select>
+              {unidadesMedida.map((unidade) => (
+                <option key={unidade.id} value={unidade.id}>
+                  {unidade.nome}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <input
@@ -251,14 +264,51 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
               step="0.10"
             />
           </div>
-          
         </div>
         <br></br>
-        <div style={{ display: "flex", gap: 14, padding: "12px 16px", background: theme.bg, borderRadius: 10, fontSize: 12 }}>
-        <span style={{ color:theme.muted }}>Custo Ing: <span style={{ color: theme.text }}>{50}</span></span>
-        <span style={{ color: theme.muted }}>Preço Venda: <span style={{ color: theme.teal }}>{50}</span></span>
-        <span style={{ color: theme.muted }}>Margem: <span style={{ color: 50 > 30 ? theme.green : 50> 15 ? theme.amber : theme.rose, fontWeight: 700 }}>5.0%</span></span>
-      </div>
+        <div
+          style={{
+            display: "flex",
+            gap: 14,
+            padding: "12px 16px",
+            background: theme.bg,
+            borderRadius: 10,
+            fontSize: 12,
+          }}
+        >
+          <span style={{ color: theme.muted }}>
+            Custo Ing:{" "}
+            <span style={{ color: theme.text }}>
+              {formaterReal(formData.precoIngrediente)}
+            </span>
+          </span>
+          <span style={{ color: theme.muted }}>
+            Preço Venda:{" "}
+            <span style={{ color: theme.teal }}>
+              {formaterReal(
+                formData.tipoPreco == 1
+                  ? formData.markup * formData.precoIngrediente
+                  : formData.preco,
+              )}
+            </span>
+          </span>
+          <span style={{ color: theme.muted }}>
+            Margem:{" "}
+            <span
+              style={{
+                color:
+                  margin() > 30
+                    ? theme.green
+                    : margin() > 15
+                      ? theme.amber
+                      : theme.rose,
+                fontWeight: 700,
+              }}
+            >
+              {margin()}%
+            </span>
+          </span>
+        </div>
       </form>
     </div>
   );
