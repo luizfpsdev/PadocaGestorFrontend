@@ -50,7 +50,7 @@ const FornecedoresPage = () => {
         <Modal
           title="Novo Fornecedor"
           onClose={() => setOpenModal(false)}
-          wide = {false}
+          wide={true}
           formId={FORM_ID}
         >
           <FormularioFornecedor 

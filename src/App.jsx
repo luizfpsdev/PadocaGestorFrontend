@@ -6,7 +6,7 @@ import ContainerPrincipal from "./components/ContainerPrincipal";
 import LoadingPage from "./Pages/Loadingpage";
 import FornecedoresPage from "./Pages/Fornecedor/Fornecedorespage";
 import ProductsPage from "./Pages/Produto/Productspage";
-import ReceitasPage from "./Pages/Receitaspage";
+import ReceitasPage from "./Pages/Receita/Receitaspage";
 import ComparativoPage from "./Pages/Comparativopage";
 import DashboardPage from "./Pages/Dashboardpage";
 import CustosOperacionaisPage from "./Pages/CustosOperacionaispage";

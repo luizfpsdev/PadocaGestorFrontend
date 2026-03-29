@@ -1,7 +1,8 @@
 import { useState } from "react";
-import HeaderPage from "../components/HeaderPages";
-import useStyle from "../components/Hooks/UseStyle";
-import Modal from "../components/Modal";
+import HeaderPage from "../../components/HeaderPages";
+import useStyle from "../../components/Hooks/UseStyle";
+import Modal from "../../components/Modal";
+import FormularioReceita from "./FormularioReceita";
 
 const ReceitasPage = () => {
   const { S, theme } = useStyle();
@@ -31,7 +32,7 @@ const ReceitasPage = () => {
       />
       {openModal && (
         <Modal title="Nova Receita" onClose={() => setOpenModal(false)} wide>
-          <p>Conteúdo do modal de nova receita</p>
+          <FormularioReceita onClose={() => setOpenModal(false)} />
         </Modal>
       )}
     </div>

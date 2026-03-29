@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import useStyle from "../../components/Hooks/UseStyle";
-import { estados } from "./estados";
+import { estados } from "./estados.ts";
 
 const bandeiraStyle = {
   width: 22,
@@ -131,7 +131,7 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
             required
           />
         </div>
-
+        <br />
         <div>
           <label style={S.inputLabel} htmlFor="email">
             E-mail
@@ -252,7 +252,7 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
                         alignItems: "center",
                         gap: 8,
                         cursor: "pointer",
-                        fontSize: 13,
+                        
                       }}
                     >
                       <img
