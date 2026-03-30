@@ -111,7 +111,7 @@ const ProdutosReceita = ({ formData, setFormData }) => {
         Produtos da receita
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {(formData.produtos || []).map((item) => {
           const produtoSelecionado = getProdutoSelecionado(item.produtoId);
           const quantidade = parseFloat(item.quantidade) || 0;
@@ -125,8 +125,8 @@ const ProdutosReceita = ({ formData, setFormData }) => {
               key={item.id}
               style={{
                 display: "grid",
-                gridTemplateColumns: "minmax(0, 1fr) 120px 140px 44px",
-                gap: 12,
+                gridTemplateColumns: "minmax(0, 1fr) 88px 110px 32px",
+                gap: 8,
                 alignItems: "center",
               }}
             >
@@ -134,7 +134,7 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                 <input
                   style={{
                     ...S.inp,
-                    paddingRight: 42,
+                    paddingRight: 12,
                     borderColor: produtoSelecionado ? theme.border2 : theme.border,
                   }}
                   type="text"
@@ -162,7 +162,7 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                       overflow: "hidden",
                       zIndex: 999,
                       boxShadow: "0 18px 32px rgba(0,0,0,.24)",
-                      maxHeight: 220,
+                      maxHeight: 180,
                       overflowY: "auto",
                     }}
                   >
@@ -174,7 +174,7 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                           onClick={() => selecionarProduto(item.id, produto)}
                           style={{
                             width: "100%",
-                            padding: "12px 14px",
+                            padding: "8px 10px",
                             border: "none",
                             borderBottom: `1px solid ${theme.border}`,
                             background: "transparent",
@@ -236,6 +236,8 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                 style={{
                   color: theme.amber,
                   textAlign: "right",
+                  fontSize: 12,
+                  whiteSpace: "nowrap",
                 }}
               >
                 {formaterReal(custo)}
@@ -246,6 +248,9 @@ const ProdutosReceita = ({ formData, setFormData }) => {
                 onClick={() => removerLinha(item.id)}
                 style={{
                   ...S.closeBtn,
+                  width: 32,
+                  height: 32,
+                  fontSize: 12,
                 }}
               >
                 {"\u2715"}
@@ -260,6 +265,7 @@ const ProdutosReceita = ({ formData, setFormData }) => {
         onClick={adicionarLinha}
         style={{
           ...S.toggleBtn,
+          padding: "6px 12px",
         }}
       >
         + Adicionar Produto

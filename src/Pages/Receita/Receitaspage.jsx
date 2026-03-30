@@ -7,7 +7,8 @@ import FormularioReceita from "./FormularioReceita";
 const ReceitasPage = () => {
   const { S, theme } = useStyle();
   const [openModal, setOpenModal] = useState(false);
-  const [formData, setFormData] = useState({
+
+  const defaultFormData = {
     nome: "",
     categoria: 0,
     unidade: "",
@@ -19,7 +20,8 @@ const ReceitasPage = () => {
     modoPreparo: "",
     produtos: [],
     fotos: [],
-  });
+  }
+  const [formData, setFormData] = useState(defaultFormData);
 
   const formId = "receita-form";
 
@@ -54,7 +56,7 @@ const ReceitasPage = () => {
           title="Nova Receita"
           onClose={() => {
             setOpenModal(false);
-            setFormData({});
+            setFormData(defaultFormData);
           }}
           wide={true}
           formId={formId}
