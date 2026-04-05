@@ -107,9 +107,6 @@ const useStyle = () => {
       padding: "14px 24px",
       borderBottom: `1px solid ${theme.border}`,
       background: theme.surface,
-      position: "sticky",
-      top: 0,
-      zIndex: 5,
     },
     topBarTitle: {
       color: theme.text,

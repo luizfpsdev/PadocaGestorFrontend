@@ -380,7 +380,6 @@ const ComparativoPage = () => {
       style={{
         backgroundColor: theme.bg,
         color: theme.text,
-        height: "100vh",
         display: "flex",
         justifyContent: "center",
       }}

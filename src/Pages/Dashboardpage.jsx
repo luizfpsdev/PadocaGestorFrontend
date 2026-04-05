@@ -271,11 +271,8 @@ function priceTimelineFromHistory(ings, history, calcValue) {
       style={{
         backgroundColor: theme.bg,
         color: theme.text,
-        flex: 1,
-        minHeight: 0,
         display: "flex",
         justifyContent: "center",
-        overflowY: "auto",
       }}
     >
 
