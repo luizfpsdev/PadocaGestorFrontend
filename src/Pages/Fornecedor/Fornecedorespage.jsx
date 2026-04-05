@@ -2,9 +2,13 @@ import { useState } from "react";
 import HeaderPage from "../../components/HeaderPages";
 import useStyle from "../../components/Hooks/UseStyle";
 import Modal from "../../components/Modal";
+import BuscaFornecedor from "./BuscaFornecedor";
 import FormularioFornecedor from "./FormularioFornecedor";
 
 const FornecedoresPage = () => {
+  
+  const FORM_ID = "fornecedor-form";
+
   const { S, theme } = useStyle();
   const [openModal, setOpenModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -20,12 +24,15 @@ const FornecedoresPage = () => {
   const [search, setSearch] = useState("");
   const [nameOrder, setNameOrder] = useState("asc");
 
-  const FORM_ID = "fornecedor-form";
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Dados do fornecedor:", formData);
   };
+
+  console.log("search:", search);
+  console.log("nameOrder:", nameOrder);
 
   return (
     <div
@@ -50,32 +57,12 @@ const FornecedoresPage = () => {
           }
           headerStyleCustom={{ width: "100%",marginBottom: 0 }}
         />
-        <div >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 170px",
-              gap: 8,
-              marginBottom: 10,
-              padding: 22,
-            }}
-          >
-            <input
-              style={{ ...S.search, marginBottom: 0 }}
-              placeholder="Buscar fornecedor..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <select
-              style={S.inp}
-              value={nameOrder}
-              onChange={(e) => setNameOrder(e.target.value)}
-            >
-              <option value="asc">Nome (A-Z)</option>
-              <option value="desc">Nome (Z-A)</option>
-            </select>
-          </div>
-        </div>
+        <BuscaFornecedor
+          search={search}
+          setSearch={setSearch}
+          nameOrder={nameOrder}
+          setNameOrder={setNameOrder}
+        />
         {openModal && (
           <Modal
             title="Novo Fornecedor"
