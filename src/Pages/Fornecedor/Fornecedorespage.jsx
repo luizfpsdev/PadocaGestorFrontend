@@ -14,16 +14,18 @@ const FornecedoresPage = () => {
     endereco: "",
     observacao: "",
     cnpj: "",
-    uf:"",
-    cidade:"",
+    uf: "",
+    cidade: "",
   });
+  const [search, setSearch] = useState("");
+  const [nameOrder, setNameOrder] = useState("asc");
 
   const FORM_ID = "fornecedor-form";
 
-   const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Dados do fornecedor:', formData);
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Dados do fornecedor:", formData);
+  };
 
   return (
     <div
@@ -35,32 +37,61 @@ const FornecedoresPage = () => {
         justifyContent: "center",
       }}
     >
-      <HeaderPage
-        eyebrow="Gestão"
-        title="Fornecedores"
-        right={
-          <div style={{ display: "flex", gap: 8 }}>
-            <button style={S.btnPrimary} onClick={() => setOpenModal(true)}>
-              + Novo Fornecedor
-            </button>
+      <div style={{width:"75%"}}>
+        <HeaderPage
+          eyebrow="Gestão"
+          title="Fornecedores"
+          right={
+            <div style={{ display: "flex", gap: 8 }}>
+              <button style={S.btnPrimary} onClick={() => setOpenModal(true)}>
+                + Novo Fornecedor
+              </button>
+            </div>
+          }
+          headerStyleCustom={{ width: "100%",marginBottom: 0 }}
+        />
+        <div >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 170px",
+              gap: 8,
+              marginBottom: 10,
+              padding: 22,
+            }}
+          >
+            <input
+              style={{ ...S.search, marginBottom: 0 }}
+              placeholder="Buscar fornecedor..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <select
+              style={S.inp}
+              value={nameOrder}
+              onChange={(e) => setNameOrder(e.target.value)}
+            >
+              <option value="asc">Nome (A-Z)</option>
+              <option value="desc">Nome (Z-A)</option>
+            </select>
           </div>
-        }
-      />
-      {openModal && (
-        <Modal
-          title="Novo Fornecedor"
-          onClose={() => setOpenModal(false)}
-          wide={true}
-          formId={FORM_ID}
-        >
-          <FormularioFornecedor 
+        </div>
+        {openModal && (
+          <Modal
+            title="Novo Fornecedor"
+            onClose={() => setOpenModal(false)}
+            wide={true}
             formId={FORM_ID}
-            formData={formData}
-            setFormData={setFormData}
-            onSubmit={handleSubmit}
-          />
-        </Modal>
-      )}
+          >
+            <FormularioFornecedor
+              formId={FORM_ID}
+              formData={formData}
+              setFormData={setFormData}
+              onSubmit={handleSubmit}
+            />
+          </Modal>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import useStyle from "./Hooks/UseStyle";
 
-const HeaderPage = ({ eyebrow, title, right }) => {
+const HeaderPage = ({ eyebrow, title, right, headerStyleCustom }) => {
   const { S, theme } = useStyle();
 
   return (
-    <div style={S.headerStyle}>
+    <div style={{ ...S.headerStyle, ...headerStyleCustom }}>
       <div style={{ ...S.pageHead, marginBottom: 12 }}>
         <div>
           <p style={S.eyebrow}>{eyebrow}</p>
