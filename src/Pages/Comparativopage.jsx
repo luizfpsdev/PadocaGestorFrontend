@@ -67,7 +67,11 @@ const ComparativoPage = () => {
       flexDirection: "column",
       gap: 8,
     },
-    sideChip: { background: theme.border, borderRadius: 10, padding: "10px 12px" },
+    sideChip: {
+      background: theme.border,
+      borderRadius: 10,
+      padding: "10px 12px",
+    },
     sideChipLbl: {
       display: "block",
       color: theme.muted,
@@ -260,7 +264,11 @@ const ComparativoPage = () => {
       fontSize: 13,
       fontFamily: "'Mulish',sans-serif",
     },
-    toggleOn: { background: theme.teal + "22", borderColor: theme.teal, color: theme.teal },
+    toggleOn: {
+      background: theme.teal + "22",
+      borderColor: theme.teal,
+      color: theme.teal,
+    },
     overlay: {
       position: "fixed",
       inset: 0,
@@ -367,7 +375,6 @@ const ComparativoPage = () => {
     },
   };
 
-
   return (
     <div
       style={{
@@ -378,10 +385,9 @@ const ComparativoPage = () => {
         justifyContent: "center",
       }}
     >
-      <HeaderPage
-        eyebrow="Análise"
-        title="Comparativo de Custo no Tempo"
-      />
+      <div style={{width:"70%"}}>
+        <HeaderPage eyebrow="Análise" title="Comparativo de Custo no Tempo" />
+      </div>
     </div>
   );
 };

@@ -2,8 +2,7 @@ import HeaderPage from "../components/HeaderPages";
 import useStyle from "../components/Hooks/UseStyle";
 
 const CustosOperacionaisPage = () => {
-  
-  const {S, theme } = useStyle();
+  const { S, theme } = useStyle();
 
   return (
     <div
@@ -15,15 +14,18 @@ const CustosOperacionaisPage = () => {
         justifyContent: "center",
       }}
     >
-      <HeaderPage eyebrow="Gestão" title="Custos Operacionais" right={
-         <div style={{ display: "flex", gap: 8 }}>
-            <button
-              style={S.btnPrimary}
-            >
-              + Novo Custo
-            </button>
-          </div>
-      }/>
+      <div style={{ width: "70%" }}>
+        <HeaderPage
+          eyebrow="Gestão"
+          title="Custos Operacionais"
+          right={
+            <div style={{ display: "flex", gap: 8 }}>
+              <button style={S.btnPrimary}>+ Novo Custo</button>
+            </div>
+          }
+          headerStyleCustom={{ width: "100%" }}
+        />
+      </div>
     </div>
   );
 };

@@ -400,6 +400,9 @@ const useStyle = () => {
       marginBottom: 6,
       display: "block",
     },
+    containerWidth:{
+      width: "70%",
+    }
 
   };
 

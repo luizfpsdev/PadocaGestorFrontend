@@ -20,7 +20,7 @@ const ReceitasPage = () => {
     modoPreparo: "",
     produtos: [],
     fotos: [],
-  }
+  };
   const [formData, setFormData] = useState(defaultFormData);
 
   const formId = "receita-form";
@@ -40,17 +40,21 @@ const ReceitasPage = () => {
         justifyContent: "center",
       }}
     >
-      <HeaderPage
-        eyebrow="Gestão"
-        title="Receitas"
-        right={
-          <div style={{ display: "flex", gap: 8 }}>
-            <button style={S.btnPrimary} onClick={() => setOpenModal(true)}>
-              + Nova Receita
-            </button>
-          </div>
-        }
-      />
+      <div style={S.containerWidth}>
+        <HeaderPage
+          eyebrow="Gestão"
+          title="Receitas"
+          right={
+            <div style={{ display: "flex", gap: 8 }}>
+              <button style={S.btnPrimary} onClick={() => setOpenModal(true)}>
+                + Nova Receita
+              </button>
+            </div>
+          }
+          headerStyleCustom={{ width: "100%" }}
+        />
+      </div>
+
       {openModal && (
         <Modal
           title="Nova Receita"

@@ -279,7 +279,7 @@ function priceTimelineFromHistory(ings, history, calcValue) {
       }}
     >
 
-      <div style={{ width: "80%" }}>
+      <div style={{ width: "70%" }}>
 
       <HeaderPage
         eyebrow="Visão Geral"

@@ -74,7 +74,7 @@ const FornecedoresPage = () => {
         justifyContent: "center",
       }}
     >
-      <div style={{ width: "75%" }}>
+      <div style={{ width: "70%" }}>
         <HeaderPage
           eyebrow="GestÃ£o"
           title="Fornecedores"

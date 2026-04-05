@@ -38,18 +38,21 @@ const Productspage = () => {
           justifyContent: "center",
         }}
       >
-        <HeaderPage
-          eyebrow="Gestão"
-          title="Produtos"
-          right={
-            <div style={{ display: "flex", gap: 8 }}>
-              <button style={S.btnOutline}>Importar Planilha</button>
-              <button style={S.btnPrimary} onClick={() => setOpenModal(true)}>
-                + Novo Produto
-              </button>
-            </div>
-          }
-        />
+        <div style={S.containerWidth}>
+          <HeaderPage
+            eyebrow="Gestão"
+            title="Produtos"
+            right={
+              <div style={{ display: "flex", gap: 8 }}>
+                <button style={S.btnOutline}>Importar Planilha</button>
+                <button style={S.btnPrimary} onClick={() => setOpenModal(true)}>
+                  + Novo Produto
+                </button>
+              </div>
+            }
+            headerStyleCustom={{width:"100%"}}
+          />
+        </div>
       </div>
       <div>
         {openModal && (
