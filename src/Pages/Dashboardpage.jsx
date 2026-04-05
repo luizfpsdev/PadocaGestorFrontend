@@ -1,392 +1,544 @@
-import React from "react";
-import { useContext } from "react";
-import { ThemeContext } from "../components/Theme/ThemeContext";
 import HeaderPage from "../components/HeaderPages";
+import useStyle from "../components/Hooks/UseStyle";
+import ChartHeader from "../components/ChartHeader";
+import {
+  AreaChart, Area, BarChart, Bar, LineChart, Line,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend, RadarChart, Radar, PolarGrid,
+  PolarAngleAxis, PolarRadiusAxis,
+} from "recharts";
+
+import KpiCard from "./Dashboard/KpiCard";
+
+import formaterReal, {  fmtK, pct } from "../components/Utils/formaterReal";
+
+import { uid, dAgo } from "../components/Utils/helpers";
 
 const DashboardPage = () => {
-  const { theme } = useContext(ThemeContext);
+  const { S,theme } = useStyle();
 
-  let S = {
-    root: { display: "flex", minHeight: "100vh", background: theme.bg },
-    sidebar: {
-      width: 220,
-      background: theme.surface,
-      borderRight: `1px solid ${theme.border}`,
-      display: "flex",
-      flexDirection: "column",
-      padding: "24px 14px",
-      position: "sticky",
-      top: 0,
-      height: "100vh",
-    },
-    brand: { display: "flex", alignItems: "center", gap: 9, marginBottom: 32 },
-    dot: {
-      width: 8,
-      height: 8,
-      background: theme.teal,
-      borderRadius: "50%",
-      boxShadow: `0 0 8px ${theme.teal}`,
-    },
-    brandTxt: {
-      fontFamily: "'Bricolage Grotesque',sans-serif",
-      fontSize: 17,
-      fontWeight: 800,
-      color: theme.text,
-      letterSpacing: 2,
-    },
-    nav: { display: "flex", flexDirection: "column", gap: 3, flex: 1 },
-    navBtn: {
-      display: "flex",
-      alignItems: "center",
-      gap: 9,
-      padding: "9px 11px",
-      background: "transparent",
-      border: "none",
-      borderRadius: 9,
-      color: theme.muted,
-      fontSize: 13,
-      fontFamily: "'Mulish',sans-serif",
-      position: "relative",
-    },
-    navOn: { color: theme.text, background: theme.border },
-    navBar: {
-      position: "absolute",
-      right: 0,
-      top: "50%",
-      transform: "translateY(-50%)",
-      width: 3,
-      height: 16,
-      background: theme.teal,
-      borderRadius: "2px 0 0 2px",
-      boxShadow: `0 0 8px ${theme.teal}`,
-    },
-    sideFooter: {
-      paddingTop: 16,
-      borderTop: `1px solid ${theme.border}`,
-      display: "flex",
-      flexDirection: "column",
-      gap: 8,
-    },
-    sideChip: { background: theme.border, borderRadius: 10, padding: "10px 12px" },
-    sideChipLbl: {
-      display: "block",
-      color: theme.muted,
-      fontSize: 10,
-      fontWeight: 700,
-      textTransform: "uppercase",
-      letterSpacing: 1.5,
-      marginBottom: 4,
-    },
-    sideChipVal: {
-      display: "block",
-      fontFamily: "'JetBrains Mono',monospace",
-      fontSize: 18,
-      fontWeight: 700,
-    },
-    sidebarLogoutBtn: {
-      marginTop: 6,
-      height: 36,
-      borderRadius: 10,
-      border: `1px solid ${theme.border2}`,
-      background: theme.border,
-      color: theme.text,
-      fontSize: 12,
-      fontWeight: 700,
-      fontFamily: "'Mulish',sans-serif",
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 8,
-    },
-    topBar: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: "14px 24px",
-      borderBottom: `1px solid ${theme.border}`,
-      background: theme.surface,
-      position: "sticky",
-      top: 0,
-      zIndex: 5,
-    },
-    topBarTitle: {
-      color: theme.text,
-      fontFamily: "'Bricolage Grotesque',sans-serif",
-      fontWeight: 700,
-      fontSize: 18,
-      letterSpacing: 0.5,
-    },
-    profileWrap: { display: "flex", alignItems: "center", gap: 10 },
-    profileEmail: {
-      color: theme.muted,
-      fontSize: 12,
-      fontWeight: 600,
-      maxWidth: 220,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-    },
-    profileBtn: {
-      width: 34,
-      height: 34,
-      borderRadius: "50%",
-      border: `1px solid ${theme.border2}`,
-      background: theme.border,
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    main: { flex: 1, overflow: "auto" },
-    page: { padding: "36px 42px", maxWidth: 1200, margin: "0 auto" },
-    pageHead: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "flex-end",
-      marginBottom: 28,
-    },
-    eyebrow: {
-      color: theme.teal,
-      fontSize: 11,
-      fontWeight: 700,
-      letterSpacing: 3,
-      textTransform: "uppercase",
-      marginBottom: 4,
-    },
-    pageTitle: {
-      fontFamily: "'Bricolage Grotesque',sans-serif",
-      fontSize: 32,
-      fontWeight: 800,
-      color: theme.text,
-    },
-    dateBadge: {
-      color: theme.muted,
-      fontSize: 12,
-      padding: "7px 14px",
-      background: theme.surface,
-      borderRadius: 8,
-      border: `1px solid ${theme.border}`,
-    },
-    grid4: {
-      display: "grid",
-      gridTemplateColumns: "repeat(4,1fr)",
-      gap: 14,
-      marginBottom: 20,
-    },
-    kpi: {
-      background: theme.surface,
-      border: `1px solid ${theme.border}`,
-      borderRadius: 14,
-      padding: "16px 18px",
-      display: "flex",
-      flexDirection: "column",
-    },
-    row: { display: "flex", gap: 16 },
-    card: {
-      background: theme.surface,
-      border: `1px solid ${theme.border}`,
-      borderRadius: 14,
-      padding: "18px 20px",
-    },
-    listRow: {
-      display: "flex",
-      alignItems: "center",
-      gap: 14,
-      padding: "12px 16px",
-      background: theme.surface,
-      border: `1px solid ${theme.border}`,
-      borderRadius: 12,
-      cursor: "pointer",
-      transition: "border-color .15s",
-    },
-    listRowOn: { borderColor: theme.teal + "55", background: theme.surface },
-    listName: { color: theme.text, fontWeight: 600, fontSize: 14 },
-    rowActs: { display: "flex", gap: 5 },
-    quickStats: {
-      display: "flex",
-      flexDirection: "column",
-      gap: 7,
-      marginTop: 14,
-      paddingTop: 14,
-      borderTop: `1px solid ${theme.border}`,
-    },
-    quickRow: { display: "flex", justifyContent: "space-between" },
-    ingGrid: {
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill,minmax(230px,1fr))",
-      gap: 14,
-    },
-    ingCard: {
-      background: theme.surface,
-      border: `1px solid ${theme.border}`,
-      borderRadius: 13,
-      padding: 16,
-    },
-    priceIn: {
-      background: theme.bg,
-      border: `1px solid ${theme.teal}`,
-      borderRadius: 7,
-      padding: "4px 8px",
-      fontSize: 16,
-      color: theme.teal,
-      fontFamily: "'JetBrains Mono',monospace",
-      width: 120,
-    },
-    opRow: {
-      display: "flex",
-      alignItems: "center",
-      gap: 14,
-      padding: "11px 14px",
-      background: theme.surface,
-      borderRadius: 10,
-      border: `1px solid ${theme.border}`,
-    },
-    search: {
-      width: "100%",
-      padding: "9px 14px",
-      background: theme.bg,
-      border: `1px solid ${theme.border}`,
-      borderRadius: 10,
-      fontSize: 13,
-      color: theme.text,
-      marginBottom: 12,
-      fontFamily: "'Mulish',sans-serif",
-    },
-    toggleBtn: {
-      background: "transparent",
-      border: `1px solid ${theme.border}`,
-      borderRadius: 8,
-      padding: "7px 16px",
-      color: theme.muted,
-      fontSize: 13,
-      fontFamily: "'Mulish',sans-serif",
-    },
-    toggleOn: { background: theme.teal + "22", borderColor: theme.teal, color: theme.teal },
-    overlay: {
-      position: "fixed",
-      inset: 0,
-      background: "rgba(0,0,0,.82)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 100,
-      padding: 20,
-    },
-    modal: {
-      background: theme.surface,
-      border: `1px solid ${theme.border2}`,
-      borderRadius: 18,
-      width: "100%",
-      maxHeight: "90vh",
-      overflow: "hidden",
-      display: "flex",
-      flexDirection: "column",
-      boxShadow: "0 24px 80px rgba(0,0,0,.6)",
-    },
-    modalHead: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "18px 22px",
-      borderBottom: `1px solid ${theme.border}`,
-    },
-    modalTitle: {
-      fontFamily: "'Bricolage Grotesque',sans-serif",
-      fontSize: 20,
-      fontWeight: 700,
-      color: theme.text,
-    },
-    closeBtn: {
-      background: theme.border,
-      border: "none",
-      borderRadius: 7,
-      width: 28,
-      height: 28,
-      color: theme.muted,
-      fontSize: 13,
-    },
-    modalBody: { padding: "20px 22px", overflow: "auto", flex: 1 },
-    inp: {
-      width: "100%",
-      padding: "9px 12px",
-      background: theme.bg,
-      border: `1px solid ${theme.border}`,
-      borderRadius: 8,
-      color: theme.text,
-      fontSize: 13,
-      fontFamily: "'Mulish',sans-serif",
-    },
-    btnPrimary: {
-      background: theme.teal,
-      color: theme.bg,
-      padding: "9px 20px",
-      borderRadius: 9,
-      border: "none",
-      fontWeight: 700,
-      fontSize: 13,
-      fontFamily: "'Mulish',sans-serif",
-    },
-    btnOutline: {
-      background: "transparent",
-      color: theme.muted,
-      padding: "9px 20px",
-      borderRadius: 9,
-      border: `1px solid ${theme.border}`,
-      fontWeight: 600,
-      fontSize: 13,
-      fontFamily: "'Mulish',sans-serif",
-    },
-    toast: {
-      position: "fixed",
-      bottom: 22,
-      right: 22,
-      background: theme.surface,
-      border: "1px solid",
-      padding: "10px 18px",
-      borderRadius: 10,
-      fontWeight: 600,
-      zIndex: 200,
-      fontSize: 12,
-      fontFamily: "'JetBrains Mono',monospace",
-    },
-    th: {
-      padding: "8px 12px",
-      textAlign: "left",
-      color: theme.muted,
-      fontSize: 10,
-      fontWeight: 700,
-      textTransform: "uppercase",
-      letterSpacing: 1,
-      borderBottom: `1px solid ${theme.border}`,
-    },
-    td: { padding: "9px 12px", color: theme.text, fontSize: 13 },
-    empty: {
-      color: theme.muted,
-      textAlign: "center",
-      padding: "48px 20px",
-      fontSize: 14,
-    },
-  };
+  let TT = { background: theme.surface, border: `1px solid ${theme.border2}`, borderRadius: 8, color: theme.text, fontSize: 12 };
 
+  const PALETTE = [theme.teal, theme.green, theme.amber, theme.rose, theme.violet, theme.blue];
+
+  const prodBars = [
+    { name: "Pão Francês", custo: 0.5, venda: 1.5 },
+    { name: "Croissant", custo: 0.8, venda: 2.5 },
+    { name: "Baguete", custo: 0.6, venda: 1.8 },
+  ]
+
+  const pieData = [
+    { name: "Pães", value: 40 },
+    { name: "Doces", value: 25 },
+    { name: "Salgados", value: 20 },
+    { name: "Bebidas", value: 15 },
+  ];
+
+
+  const prods = [
+  {
+    id: "p1", name: "Massa Base Chocolate", category: "Massas", unit: "unid", yield: 1,
+    description: "Base para bolos de chocolate",
+    priceMode: "markup", markup: 1.6, manualPrice: null,
+    ingredients: [
+      { ingredientId: "i1", qty: 0.30 }, { ingredientId: "i2", qty: 0.25 },
+      { ingredientId: "i3", qty: 0.15 }, { ingredientId: "i4", qty: 3 },
+      { ingredientId: "i5", qty: 0.20 }, { ingredientId: "i6", qty: 0.10 },
+      { ingredientId: "i8", qty: 5 },
+    ],
+  },
+  {
+    id: "p2", name: "Recheio Brigadeiro", category: "Recheios", unit: "kg", yield: 0.5,
+    description: "Brigadeiro cremoso para recheio",
+    priceMode: "markup", markup: 2.0, manualPrice: null,
+    ingredients: [
+      { ingredientId: "i2", qty: 0.20 }, { ingredientId: "i3", qty: 0.10 },
+      { ingredientId: "i5", qty: 0.15 }, { ingredientId: "i6", qty: 0.08 },
+    ],
+  },
+  {
+    id: "p3", name: "Cobertura Ganache", category: "Coberturas", unit: "kg", yield: 0.4,
+    description: "Ganache brilhante de chocolate",
+    priceMode: "manual", markup: 2.0, manualPrice: 18.0,
+    ingredients: [
+      { ingredientId: "i6", qty: 0.20 }, { ingredientId: "i5", qty: 0.10 },
+      { ingredientId: "i3", qty: 0.08 },
+    ],
+  },
+  {
+    id: "p4", name: "Base Cheesecake", category: "Massas", unit: "unid", yield: 1,
+    description: "Base de biscoito para cheesecake",
+    priceMode: "markup", markup: 1.8, manualPrice: null,
+    ingredients: [
+      { ingredientId: "i7", qty: 0.50 }, { ingredientId: "i2", qty: 0.15 },
+      { ingredientId: "i4", qty: 4 }, { ingredientId: "i10", qty: 5 },
+    ],
+  },
+  {
+    id: "p5", name: "Calda de Frutas Vermelhas", category: "Caldas", unit: "L", yield: 0.3,
+    description: "Calda artesanal para sobremesas",
+    priceMode: "manual", markup: 2.0, manualPrice: 22.0,
+    ingredients: [
+      { ingredientId: "i2", qty: 0.10 }, { ingredientId: "i5", qty: 0.05 },
+    ],
+  },
+  {
+    id: "p6", name: "Mousse de Limão", category: "Recheios", unit: "kg", yield: 0.6,
+    description: "Mousse leve de limão",
+    priceMode: "markup", markup: 2.1, manualPrice: null,
+    ingredients: [
+      { ingredientId: "i12", qty: 0.30 }, { ingredientId: "i13", qty: 0.25 }, { ingredientId: "i16", qty: 0.10 },
+    ],
+  },
+  {
+    id: "p7", name: "Doce de Leite Cremoso", category: "Recheios", unit: "kg", yield: 0.7,
+    description: "Recheio base de doce de leite",
+    priceMode: "markup", markup: 2.0, manualPrice: null,
+    ingredients: [
+      { ingredientId: "i12", qty: 0.35 }, { ingredientId: "i13", qty: 0.20 }, { ingredientId: "i3", qty: 0.05 },
+    ],
+  },
+  {
+    id: "p8", name: "Ganache Branco", category: "Coberturas", unit: "kg", yield: 0.5,
+    description: "Cobertura cremosa branca",
+    priceMode: "manual", markup: 2.0, manualPrice: 21.0,
+    ingredients: [
+      { ingredientId: "i5", qty: 0.20 }, { ingredientId: "i3", qty: 0.12 }, { ingredientId: "i2", qty: 0.12 },
+    ],
+  },
+  {
+    id: "p9", name: "Crocante de Nozes", category: "Toppings", unit: "kg", yield: 0.4,
+    description: "Finalização crocante",
+    priceMode: "markup", markup: 2.4, manualPrice: null,
+    ingredients: [
+      { ingredientId: "i14", qty: 0.20 }, { ingredientId: "i2", qty: 0.10 }, { ingredientId: "i3", qty: 0.05 },
+    ],
+  },
+  {
+    id: "p10", name: "Brigadeiro Branco", category: "Recheios", unit: "kg", yield: 0.6,
+    description: "Versão branca para bolos",
+    priceMode: "markup", markup: 2.0, manualPrice: null,
+    ingredients: [
+      { ingredientId: "i12", qty: 0.30 }, { ingredientId: "i13", qty: 0.20 }, { ingredientId: "i3", qty: 0.08 },
+    ],
+  },
+  {
+    id: "p11", name: "Calda de Morango", category: "Caldas", unit: "L", yield: 0.4,
+    description: "Calda artesanal de morango",
+    priceMode: "manual", markup: 2.0, manualPrice: 24.0,
+    ingredients: [
+      { ingredientId: "i11", qty: 0.22 }, { ingredientId: "i2", qty: 0.08 },
+    ],
+  },
+  {
+    id: "p12", name: "Cobertura de Coco", category: "Coberturas", unit: "kg", yield: 0.5,
+    description: "Cobertura cremosa de coco",
+    priceMode: "markup", markup: 2.2, manualPrice: null,
+    ingredients: [
+      { ingredientId: "i15", qty: 0.20 }, { ingredientId: "i5", qty: 0.18 }, { ingredientId: "i2", qty: 0.10 },
+    ],
+  },
+];
+
+
+const ings = [
+  { id: "i1", name: "Farinha de Trigo", unit: "kg", price: 4.50 },
+  { id: "i2", name: "Açúcar Refinado", unit: "kg", price: 3.80 },
+  { id: "i3", name: "Manteiga", unit: "kg", price: 28.0 },
+  { id: "i4", name: "Ovos", unit: "unid", price: 0.85 },
+  { id: "i5", name: "Leite Integral", unit: "L", price: 5.20 },
+  { id: "i6", name: "Chocolate em Pó 70%", unit: "kg", price: 22.0 },
+  { id: "i7", name: "Cream Cheese", unit: "kg", price: 45.0 },
+  { id: "i8", name: "Fermento", unit: "g", price: 0.05 },
+  { id: "i9", name: "Sal", unit: "kg", price: 2.00 },
+  { id: "i10", name: "Extrato de Baunilha", unit: "ml", price: 0.18 },
+  { id: "i11", name: "Morango", unit: "kg", price: 16.0 },
+  { id: "i12", name: "Leite Condensado", unit: "kg", price: 9.5 },
+  { id: "i13", name: "Creme de Leite", unit: "kg", price: 8.9 },
+  { id: "i14", name: "Nozes", unit: "kg", price: 52.0 },
+  { id: "i15", name: "Coco Ralado", unit: "kg", price: 19.0 },
+  { id: "i16", name: "Limão", unit: "kg", price: 7.8 },
+];
+
+
+function ingCostOfProduct(prod, ingredients) {
+  return prod.ingredients.reduce((t, pi) => {
+    const ing = ingredients.find(i => i.id === pi.ingredientId);
+    return t + (ing ? ing.price * pi.qty : 0);
+  }, 0);
+}
+
+function salePriceOfProduct(prod, ingredients) {
+  const cost = ingCostOfProduct(prod, ingredients);
+  if (prod.priceMode === "manual" && prod.manualPrice != null) return prod.manualPrice;
+  return cost * prod.markup;
+}
+
+function costOfRecipe(recipe, products, ingredients) {
+  return recipe.products.reduce((t, rp) => {
+    const prod = products.find(p => p.id === rp.productId);
+    if (!prod) return t;
+    return t + salePriceOfProduct(prod, ingredients) * rp.qty;
+  }, 0);
+}
+
+function toMonthly(oc) {
+  if (oc.recurrence === "weekly") return oc.amount * 4.33;
+  if (oc.recurrence === "annual") return oc.amount / 12;
+  return oc.amount;
+}
+
+function opPerUnit(opCosts, recipes, recipeId) {
+  const totalOp = opCosts.reduce((t, c) => t + toMonthly(c), 0);
+  const totalU = recipes.reduce((t, r) => t + (r.monthlyBatches || 0) * (r.yield || 1), 0);
+  if (!totalU) return 0;
+  const recipe = recipes.find(r => r.id === recipeId);
+  const myU = (recipe?.monthlyBatches || 0) * (recipe?.yield || 1);
+  return (totalOp * (myU / totalU)) / myU;
+}
+
+function productSaleFromPriceMap(prod, priceMap) {
+  const cost = prod.ingredients.reduce((t, pi) => t + ((priceMap[pi.ingredientId] || 0) * (parseFloat(pi.qty) || 0)), 0);
+  return prod.priceMode === "manual" ? (parseFloat(prod.manualPrice) || 0) : cost * (parseFloat(prod.markup) || 1);
+}
+
+function recipeCostUnitFromPriceMap(recipe, prods, priceMap, opCosts, recipes) {
+  const prodCost = recipe.products.reduce((t, rp) => {
+    const p = prods.find(x => x.id === rp.productId);
+    if (!p) return t;
+    return t + productSaleFromPriceMap(p, priceMap) * (parseFloat(rp.qty) || 0);
+  }, 0);
+  return prodCost / (recipe.yield || 1) + opPerUnit(opCosts, recipes, recipe.id);
+}
+
+function recipeSaleUnitFromPriceMap(recipe, prods, priceMap, opCosts, recipes) {
+  const totalU = recipeCostUnitFromPriceMap(recipe, prods, priceMap, opCosts, recipes);
+  return totalU * (parseFloat(recipe.markup) || 1);
+}
+
+function priceTimelineFromHistory(ings, history, calcValue) {
+  const currMap = Object.fromEntries(ings.map(i => [i.id, i.price]));
+  const asc = [...history].sort((a, b) => new Date(a.date) - new Date(b.date));
+  if (!asc.length) return [{ date: new Date(), value: parseFloat(calcValue(currMap).toFixed(2)) }];
+
+  const baseMap = { ...currMap };
+  [...asc].reverse().forEach(h => { baseMap[h.ingredientId] = h.oldPrice; });
+
+  const workMap = { ...baseMap };
+  const points = asc.map(h => {
+    workMap[h.ingredientId] = h.newPrice;
+    return { date: new Date(h.date), value: parseFloat(calcValue(workMap).toFixed(2)) };
+  });
+  const latestValue = parseFloat(calcValue(currMap).toFixed(2));
+  const last = points[points.length - 1];
+  if (!last || last.value !== latestValue) points.push({ date: new Date(), value: latestValue });
+  return points;
+}
+
+  const topProds = prods.map(p => {
+    const cost = ingCostOfProduct(p, ings);
+    const sale = salePriceOfProduct(p, ings);
+    const m = sale ? ((sale - cost) / sale * 100) : 0;
+    return { name: p.name, margin: parseFloat(m.toFixed(1)), cost: parseFloat(cost.toFixed(2)), sale: parseFloat(sale.toFixed(2)) };
+  }).sort((a, b) => b.margin - a.margin);
+
+
+
+  function genHistory(ingredients) {
+  const h = [];
+  ingredients.forEach(ing => {
+    let p = ing.price * 0.84;
+    for (let i = 59; i >= 0; i--) {
+      if (Math.random() < 0.15) {
+        const np = Math.max(0.01, p + (Math.random() - 0.42) * p * 0.10);
+        h.push({ id: uid(), ingredientId: ing.id, ingredientName: ing.name, oldPrice: p, newPrice: np, date: dAgo(i) });
+        p = np;
+      }
+    }
+    if (Math.abs(p - ing.price) > 0.01)
+      h.push({ id: uid(), ingredientId: ing.id, ingredientName: ing.name, oldPrice: p, newPrice: ing.price, date: new Date() });
+  });
+  return h.sort((a, b) => a.date - b.date);
+}
+
+
+  const history = genHistory(ings);
+
+  const recent = [...history].sort((a, b) => b.date - a.date).slice(0, 6);
 
   return (
     <div
       style={{
         backgroundColor: theme.bg,
         color: theme.text,
-        height: "100vh",
+        flex: 1,
+        minHeight: 0,
         display: "flex",
         justifyContent: "center",
+        overflowY: "auto",
       }}
     >
+
+      <div style={{ width: "80%" }}>
+
       <HeaderPage
         eyebrow="Visão Geral"
         title="Dashboard"
         right={
           <div style={{ display: "flex", gap: 8 }}>
-            <div style={S.dateBadge}>{new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })}</div>
+            <div style={S.dateBadge}>
+              {new Date().toLocaleDateString("pt-BR", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              })}
+            </div>
           </div>
         }
+        headerStyleCustom={{ width: "100%", marginBottom: 0 }}
       />
+
+      
+        <div style={{padding:22}}>
+          {/* KPIs */}
+          <div style={{ ...S.grid4, marginBottom: 20 }}>
+            {[
+              {
+                lbl: "Produtos Cadastrados",
+                val: 100,
+                color: theme.violet,
+                icon: "\uD83D\uDCE6",
+              },
+              {
+                lbl: "Custo Op. Mensal",
+                val: fmtK(100),
+                color: theme.rose,
+                icon: "\u26A1",
+              },
+            ].map((k, i) => (
+              <KpiCard key={i} {...k} />
+            ))}
+          </div>
+
+          {/* Charts row 1 */}
+          <div style={{ ...S.row, marginBottom: 16 }}>
+            <div style={{ ...S.card, flex: 2 }}>
+              <ChartHeader title="Custo vs Preço de Venda por Produto" />
+              <ResponsiveContainer width="100%" height={210}>
+                <BarChart data={prodBars} barGap={4}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fill: theme.muted, fontSize: 11 }}
+                  />
+                  <YAxis
+                    tick={{ fill: theme.muted, fontSize: 11 }}
+                    tickFormatter={(v) => `R$${v}`}
+                  />
+                  <Tooltip
+                    contentStyle={TT}
+                    labelStyle={{ color: theme.text }}
+                    itemStyle={{ color: theme.text }}
+                    formatter={(v, n) => [
+                      formaterReal(v),
+                      n === "custo" ? "Custo Ing." : "Preço Venda",
+                    ]}
+                  />
+                  <Bar
+                    dataKey="custo"
+                    fill={theme.rose}
+                    radius={[4, 4, 0, 0]}
+                    name="custo"
+                  />
+                  <Bar
+                    dataKey="venda"
+                    fill={theme.teal}
+                    radius={[4, 4, 0, 0]}
+                    name="venda"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div style={{ ...S.card, flex: 1 }}>
+              <ChartHeader title="Produtos por Categoria" />
+              <ResponsiveContainer width="100%" height={210}>
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={55}
+                    outerRadius={80}
+                    dataKey="value"
+                    paddingAngle={4}
+                  >
+                    {pieData.map((_, i) => (
+                      <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={TT}
+                    labelStyle={{ color: theme.text }}
+                    itemStyle={{ color: theme.text }}
+                  />
+                  <Legend
+                    iconType="circle"
+                    wrapperStyle={{ color: theme.muted, fontSize: 12 }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Charts row 2 */}
+          <div style={{ ...S.row, marginBottom: 16 }}>
+            <div style={{ ...S.card, flex: 1 }}>
+              <ChartHeader title="Ranking de Margem por Produto" />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 8,
+                  marginTop: 4,
+                }}
+              >
+                {topProds.map((p, i) => (
+                  <div
+                    key={i}
+                    style={{ display: "flex", alignItems: "center", gap: 10 }}
+                  >
+                    <span
+                      style={{
+                        color: theme.muted,
+                        fontSize: 11,
+                        width: 16,
+                        textAlign: "right",
+                      }}
+                    >
+                      {i + 1}
+                    </span>
+                    <span
+                      style={{
+                        flex: 1,
+                        color: theme.text,
+                        fontSize: 13,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {p.name}
+                    </span>
+                    <div
+                      style={{
+                        width: 100,
+                        height: 4,
+                        background: theme.border,
+                        borderRadius: 2,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: `${Math.min(p.margin, 100)}%`,
+                          height: "100%",
+                          background:
+                            p.margin > 40
+                              ? theme.green
+                              : p.margin > 20
+                                ? theme.amber
+                                : theme.rose,
+                          borderRadius: 2,
+                        }}
+                      />
+                    </div>
+                    <span
+                      style={{
+                        color:
+                          p.margin > 40
+                            ? theme.green
+                            : p.margin > 20
+                              ? theme.amber
+                              : theme.rose,
+                        fontFamily: "monospace",
+                        fontSize: 12,
+                        fontWeight: 700,
+                        width: 44,
+                        textAlign: "right",
+                      }}
+                    >
+                      {p.margin}%
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ ...S.card, flex: 1 }}>
+              <ChartHeader title="Últimas Variações de Ingredientes" />
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {recent.map((h) => {
+                  const up = h.newPrice > h.oldPrice;
+                  return (
+                    <div
+                      key={h.id}
+                      style={{ display: "flex", alignItems: "center", gap: 10 }}
+                    >
+                      <div
+                        style={{
+                          width: 6,
+                          height: 6,
+                          borderRadius: "50%",
+                          background: up ? theme.rose : theme.green,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span
+                        style={{
+                          flex: 1,
+                          color: theme.text,
+                          fontSize: 12,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {h.ingredientName}
+                      </span>
+                      <span
+                        style={{
+                          color: theme.muted,
+                          fontSize: 11,
+                          textDecoration: "line-through",
+                        }}
+                      >
+                        {formaterReal(h.oldPrice)}
+                      </span>
+                      <span
+                        style={{
+                          color: up ? theme.rose : theme.green,
+                          fontWeight: 700,
+                          fontSize: 12,
+                        }}
+                      >
+                        {formaterReal(h.newPrice)}
+                      </span>
+                      <span
+                        style={{
+                          color: up ? theme.rose : theme.green,
+                          fontSize: 11,
+                          fontFamily: "monospace",
+                        }}
+                      >
+                        {up ? "+" : ""}
+                        {pct(h.newPrice, h.oldPrice)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+      </div>
+        </div>
     </div>
   );
 };
