@@ -8,7 +8,7 @@ import FornecedoresPage from "./Pages/Fornecedor/Fornecedorespage";
 import ProductsPage from "./Pages/Produto/Productspage";
 import ReceitasPage from "./Pages/Receita/Receitaspage";
 import ComparativoPage from "./Pages/Comparativopage";
-import DashboardPage from "./Pages/Dashboardpage";
+import DashboardPage from "./Pages/Dashboard/Dashboardpage";
 import CustosOperacionaisPage from "./Pages/CustosOperacionaispage";
 import useStyle from "./components/Hooks/UseStyle";
 

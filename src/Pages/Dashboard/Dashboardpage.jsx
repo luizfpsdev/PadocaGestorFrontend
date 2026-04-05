@@ -1,6 +1,6 @@
-import HeaderPage from "../components/HeaderPages";
-import useStyle from "../components/Hooks/UseStyle";
-import ChartHeader from "../components/ChartHeader";
+import HeaderPage from "../../components/HeaderPages";
+import useStyle from "../../components/Hooks/UseStyle";
+import ChartHeader from "../../components/ChartHeader";
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -8,11 +8,11 @@ import {
   PolarAngleAxis, PolarRadiusAxis,
 } from "recharts";
 
-import KpiCard from "./Dashboard/KpiCard";
+import KpiCard from "./KpiCard";
 
-import formaterReal, {  fmtK, pct } from "../components/Utils/formaterReal";
+import formaterReal, {  fmtK, pct } from "../../components/Utils/formaterReal";
 
-import { uid, dAgo } from "../components/Utils/helpers";
+import { uid, dAgo } from "../../components/Utils/helpers";
 
 const DashboardPage = () => {
   const { S,theme } = useStyle();
