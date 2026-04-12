@@ -5,12 +5,3 @@
     overflow: hidden;
 }
 
-.boxConteudo {
-    width: 100%;
-    min-width: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-}

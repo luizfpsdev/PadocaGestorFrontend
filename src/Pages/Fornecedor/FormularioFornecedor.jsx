@@ -119,6 +119,19 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
     <div className="formulario-fornecedor">
       <form id={formId} onSubmit={onSubmit}>
         <div>
+          <label htmlFor="contato" style={S.inputLabel}>
+            Contato
+          </label>
+          <input
+            style={{ ...S.inp }}
+            type="text"
+            name="contato"
+            value={formData.contato}
+            onChange={handleChange}
+          />
+        </div>
+        <br />
+        <div>
           <label htmlFor="nome" style={S.inputLabel}>
             Nome*
           </label>

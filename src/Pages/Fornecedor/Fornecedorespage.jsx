@@ -1,68 +1,92 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import HeaderPage from "../../components/HeaderPages";
 import useStyle from "../../components/Hooks/UseStyle";
 import Modal from "../../components/Modal";
 import BuscaFornecedor from "./BuscaFornecedor";
 import FornecedorCard from "./FornecedorCard";
 import FormularioFornecedor from "./FormularioFornecedor";
+import {
+  createEmptySupplierForm,
+  loadSuppliers,
+  mapFormToSupplier,
+  mapSupplierToForm,
+  saveSuppliers,
+} from "./fornecedoresStorage";
 
 const FornecedoresPage = () => {
   const FORM_ID = "fornecedor-form";
 
   const { S, theme } = useStyle();
   const [openModal, setOpenModal] = useState(false);
-  const [formData, setFormData] = useState({
-    nome: "",
-    email: "",
-    telefone: "",
-    endereco: "",
-    observacao: "",
-    cnpj: "",
-    uf: "",
-    cidade: "",
-  });
+  const [editingSupplierId, setEditingSupplierId] = useState(null);
+  const [formData, setFormData] = useState(createEmptySupplierForm);
   const [search, setSearch] = useState("");
   const [nameOrder, setNameOrder] = useState("asc");
+  const [suppliers, setSuppliers] = useState(loadSuppliers);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Dados do fornecedor:", formData);
+
+    const supplierData = mapFormToSupplier(formData, editingSupplierId);
+    const nextSuppliers = editingSupplierId
+      ? suppliers.map((item) =>
+          item.id === editingSupplierId ? supplierData : item,
+        )
+      : [supplierData, ...suppliers];
+
+    setSuppliers(nextSuppliers);
+    saveSuppliers(nextSuppliers);
+    setFormData(createEmptySupplierForm());
+    setEditingSupplierId(null);
+    setOpenModal(false);
   };
 
-  console.log("search:", search);
-  console.log("nameOrder:", nameOrder);
+  const filteredSuppliers = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+    const visibleSuppliers = suppliers.filter((supplier) => {
+      if (!normalizedSearch) return true;
 
-  const SEED_SUP = [
-    {
-      id: "s1",
-      name: "Atacado Doce Sul",
-      contact: "Marina",
-      phone: "(11) 98888-1111",
-      email: "vendas@docesul.com",
-      city: "Sao Paulo",
-      note: "Entrega 2x por semana",
-    },
-    {
-      id: "s2",
-      name: "Laticinios Serra",
-      contact: "Rafael",
-      phone: "(11) 97777-2222",
-      email: "comercial@serra.com",
-      city: "Campinas",
-      note: "Prazo 14 dias",
-    },
-    {
-      id: "s3",
-      name: "Distribuidora Central",
-      contact: "Carla",
-      phone: "(11) 96666-3333",
-      email: "pedido@dcentral.com",
-      city: "Guarulhos",
-      note: "",
-    },
-  ];
+      const searchableFields = [
+        supplier.name,
+        supplier.contact,
+        supplier.email,
+        supplier.city,
+      ];
 
-  const [suppliers, setSuppliers] = useState(SEED_SUP);
+      return searchableFields.some((field) =>
+        field?.toLowerCase().includes(normalizedSearch),
+      );
+    });
+
+    return visibleSuppliers.sort((a, b) => {
+      const compare = a.name.localeCompare(b.name, "pt-BR");
+      return nameOrder === "asc" ? compare : compare * -1;
+    });
+  }, [nameOrder, search, suppliers]);
+
+  const handleDelete = (selectedSupplier) => {
+    const nextSuppliers = suppliers.filter((item) => item.id !== selectedSupplier.id);
+    setSuppliers(nextSuppliers);
+    saveSuppliers(nextSuppliers);
+  };
+
+  const handleCreate = () => {
+    setEditingSupplierId(null);
+    setFormData(createEmptySupplierForm());
+    setOpenModal(true);
+  };
+
+  const handleEdit = (selectedSupplier) => {
+    setEditingSupplierId(selectedSupplier.id);
+    setFormData(mapSupplierToForm(selectedSupplier));
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setEditingSupplierId(null);
+    setFormData(createEmptySupplierForm());
+  };
 
   return (
     <div
@@ -75,11 +99,14 @@ const FornecedoresPage = () => {
     >
       <div style={{ width: "70%" }}>
         <HeaderPage
-          eyebrow="GestÃ£o"
+          eyebrow="Gestão"
           title="Fornecedores"
           right={
             <div style={{ display: "flex", gap: 8 }}>
-              <button style={S.btnPrimary} onClick={() => setOpenModal(true)}>
+              <button
+                style={S.btnPrimary}
+                onClick={handleCreate}
+              >
                 + Novo Fornecedor
               </button>
             </div>
@@ -102,26 +129,19 @@ const FornecedoresPage = () => {
             paddingRight: 22,
           }}
         >
-          {suppliers.map((supplier) => (
+          {filteredSuppliers.map((supplier) => (
             <FornecedorCard
               key={supplier.id}
               supplier={supplier}
-              onEdit={(selectedSupplier) =>
-                setModal({ type: "supplier", data: selectedSupplier })
-              }
-              onDelete={(selectedSupplier) => {
-                setSuppliers((currentSuppliers) =>
-                  currentSuppliers.filter((item) => item.id !== selectedSupplier.id)
-                );
-                showToast("Fornecedor removido", theme.rose);
-              }}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </div>
         {openModal && (
           <Modal
-            title="Novo Fornecedor"
-            onClose={() => setOpenModal(false)}
+            title={editingSupplierId ? "Editar Fornecedor" : "Novo Fornecedor"}
+            onClose={handleCloseModal}
             wide={true}
             formId={FORM_ID}
           >

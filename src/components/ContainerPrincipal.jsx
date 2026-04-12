@@ -4,9 +4,26 @@ import { Outlet } from 'react-router-dom';
 import style from './ContainerPrincipal.module.css';
 import HeaderComponent from './Header/HeaderComponent';
 import Sidebar from './Sidebar/Sidebar';
+import useStyle from './Hooks/UseStyle';
 
 const ContainerPrincipal = () => {
   const auth = useAuth();
+
+  const { theme } = useStyle();
+
+
+  const boxConteudoStyle = {
+    width: "100%",
+    minWidth: 0,
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    overflowY: "auto",
+    overflowX: "hidden",
+    backgroundColor: theme.bg,
+  };
+
+
 
   const handleLogout = () => {
     auth.removeUser();
@@ -69,7 +86,7 @@ const ContainerPrincipal = () => {
     <>
       <div className={style.container}>
         <Sidebar></Sidebar>
-        <div className={style.boxConteudo}>
+        <div style={boxConteudoStyle}>
           <HeaderComponent></HeaderComponent>
           <Outlet></Outlet>
         </div>
