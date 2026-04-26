@@ -97,7 +97,6 @@ const FornecedoresPage = () => {
         }
 
         const data = await response.json();
-         console.log("Resposta da API de fornecedores:", data.itens);
         const nextSuppliers = Array.isArray(data?.itens)
           ? data.itens.map(mapApiSupplierToLocal)
           : [];
