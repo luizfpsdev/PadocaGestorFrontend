@@ -8,7 +8,6 @@ import FornecedorCard from "./FornecedorCard";
 import FormularioFornecedor from "./FormularioFornecedor";
 import {
   createEmptySupplierForm,
-  loadSuppliers,
   mapApiSupplierToLocal,
   mapFormToSupplier,
   mapFormToSupplierRequest,
@@ -27,6 +26,8 @@ const EMPTY_STATE_COPY = {
     "Tente outro nome, reduza os filtros ou revise a grafia para encontrar o fornecedor que voce procura.",
 };
 
+const SEARCH_DEBOUNCE_MS = 700;
+
 const FornecedoresPage = () => {
   const FORM_ID = "fornecedor-form";
   const PAGE_SIZE = 10;
@@ -39,7 +40,7 @@ const FornecedoresPage = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [nameOrder, setNameOrder] = useState("asc");
-  const [suppliers, setSuppliers] = useState(loadSuppliers);
+  const [suppliers, setSuppliers] = useState([]);
   const [isLoadingSuppliers, setIsLoadingSuppliers] = useState(false);
   const [listError, setListError] = useState("");
   const [submitError, setSubmitError] = useState("");
@@ -51,7 +52,7 @@ const FornecedoresPage = () => {
   useEffect(() => {
     const timeout = window.setTimeout(() => {
       setDebouncedSearch(search);
-    }, 400);
+    }, SEARCH_DEBOUNCE_MS);
 
     return () => window.clearTimeout(timeout);
   }, [search]);
@@ -88,12 +89,15 @@ const FornecedoresPage = () => {
           signal: controller.signal,
         });
 
+       
+
         if (!response.ok) {
           const message = await response.text();
           throw new Error(message || "Erro ao listar fornecedores.");
         }
 
         const data = await response.json();
+         console.log("Resposta da API de fornecedores:", data.itens);
         const nextSuppliers = Array.isArray(data?.itens)
           ? data.itens.map(mapApiSupplierToLocal)
           : [];
@@ -186,13 +190,7 @@ const FornecedoresPage = () => {
     }
   };
 
-  const filteredSuppliers = useMemo(() => {
-    return [...suppliers].sort((a, b) => {
-      const compare = a.name.localeCompare(b.name, "pt-BR");
-      return nameOrder === "asc" ? compare : compare * -1;
-    });
-  }, [nameOrder, suppliers]);
-  const showEmptyState = !isLoadingSuppliers && filteredSuppliers.length === 0;
+  const showEmptyState = !isLoadingSuppliers && suppliers.length === 0;
 
   const handleDelete = async (selectedSupplier) => {
     if (!auth.user?.access_token) {
@@ -295,71 +293,6 @@ const FornecedoresPage = () => {
             {listError}
           </div>
         )}
-        {isLoadingSuppliers && filteredSuppliers.length > 0 && (
-          <div
-            style={{
-              margin: "0 22px 14px",
-              padding: "12px 14px",
-              borderRadius: 14,
-              border: `1px solid ${theme.border}`,
-              background: `linear-gradient(135deg, ${theme.surface} 0%, ${theme.border} 100%)`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 12,
-              color: theme.text,
-              transition: "opacity .3s ease, transform .3s ease",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  background: theme.teal,
-                  boxShadow: `0 0 0 6px ${theme.teal}22`,
-                  flexShrink: 0,
-                }}
-              />
-              <div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: theme.text,
-                  }}
-                >
-                  Atualizando fornecedores
-                </div>
-                <div style={{ fontSize: 12, color: theme.muted }}>
-                  Refinando a listagem para combinar com sua busca.
-                </div>
-              </div>
-            </div>
-            <div
-              style={{
-                width: 82,
-                height: 6,
-                borderRadius: 999,
-                background: theme.bg,
-                overflow: "hidden",
-                flexShrink: 0,
-              }}
-            >
-              <div
-                style={{
-                  width: "48%",
-                  height: "100%",
-                  borderRadius: 999,
-                  background: `linear-gradient(90deg, ${theme.teal}, ${theme.green || theme.teal})`,
-                  transform: "translateX(60%)",
-                  transition: "transform .45s ease",
-                }}
-              />
-            </div>
-          </div>
-        )}
 
         <div
           style={{
@@ -368,51 +301,9 @@ const FornecedoresPage = () => {
             gap: 10,
             paddingLeft: 22,
             paddingRight: 22,
-            opacity: isLoadingSuppliers && filteredSuppliers.length > 0 ? 0.9 : 1,
-            transform:
-              isLoadingSuppliers && filteredSuppliers.length > 0
-                ? "translateY(6px)"
-                : "translateY(0)",
-            transition: "opacity .4s cubic-bezier(.22,1,.36,1), transform .4s cubic-bezier(.22,1,.36,1)",
           }}
         >
-          {isLoadingSuppliers && filteredSuppliers.length === 0 && (
-            <div
-              style={{
-                ...S.card,
-                minHeight: 210,
-                display: "grid",
-                placeItems: "center",
-                padding: 28,
-                background: `linear-gradient(135deg, ${theme.surface} 0%, ${theme.border} 100%)`,
-              }}
-            >
-              <div style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    width: 52,
-                    height: 52,
-                    margin: "0 auto 14px",
-                    borderRadius: "50%",
-                    background: `${theme.teal}18`,
-                    border: `1px solid ${theme.teal}33`,
-                    display: "grid",
-                    placeItems: "center",
-                    color: theme.teal,
-                    fontSize: 24,
-                  }}
-                >
-                  {"\uD83D\uDD0D"}
-                </div>
-                <div style={{ color: theme.text, fontWeight: 700, fontSize: 15 }}>
-                  Carregando fornecedores
-                </div>
-                <div style={{ color: theme.muted, fontSize: 12, marginTop: 6 }}>
-                  Estamos preparando a listagem para voce.
-                </div>
-              </div>
-            </div>
-          )}
+     
           {showEmptyState && (
             <div
               style={{
@@ -532,14 +423,12 @@ const FornecedoresPage = () => {
               </div>
             </div>
           )}
-          {filteredSuppliers.map((supplier, index) => (
+          {suppliers.map((supplier) => (
             <FornecedorCard
               key={supplier.id}
               supplier={supplier}
               onEdit={handleEdit}
               onDelete={handleDelete}
-              isRefreshing={isLoadingSuppliers}
-              index={index}
             />
           ))}
         </div>

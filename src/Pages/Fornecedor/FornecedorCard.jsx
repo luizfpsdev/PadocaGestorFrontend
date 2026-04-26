@@ -2,7 +2,7 @@ import useStyle from "../../components/Hooks/UseStyle";
 import IcoBtn from "../../components/IconBtn";
 import Tag from "../../components/Tag";
 
-const FornecedorCard = ({ supplier, onEdit, onDelete, isRefreshing = false, index = 0 }) => {
+const FornecedorCard = ({ supplier, onEdit, onDelete }) => {
   const { S, theme } = useStyle();
 
   return (
@@ -10,15 +10,6 @@ const FornecedorCard = ({ supplier, onEdit, onDelete, isRefreshing = false, inde
       style={{
         ...S.card,
         padding: "14px 14px 12px",
-        opacity: isRefreshing ? 0.74 : 1,
-        transform: isRefreshing ? "translateY(10px) scale(0.988)" : "translateY(0) scale(1)",
-        filter: isRefreshing ? "saturate(0.88)" : "saturate(1)",
-        boxShadow: isRefreshing
-          ? "0 10px 24px rgba(0,0,0,.06)"
-          : "0 18px 40px rgba(0,0,0,.08)",
-        transition:
-          "opacity .38s cubic-bezier(.22,1,.36,1), transform .38s cubic-bezier(.22,1,.36,1), filter .38s ease, box-shadow .38s ease",
-        transitionDelay: isRefreshing ? "0ms" : `${Math.min(index * 45, 220)}ms`,
       }}
     >
       <div style={{minHeight:"150px"}}>
