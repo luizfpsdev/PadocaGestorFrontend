@@ -26,7 +26,7 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
     { id: 6, nome: "Duzia" },
   ];
 
-  const fornecedores = [{ id: 0, nome: "Selecione o fornecedor" }];
+  const fornecedores = [{key: 0, id: 0, nome: "Selecione o fornecedor" }];
 
   const API_URL = (import.meta.env.VITE_API_URL || "https://localhost:7216").replace(/\/$/, "");
 
@@ -56,14 +56,14 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
               const data = await response.json();
 
               const nextSuppliers = Array.isArray(data?.itens)
-                ? data.itens.map(x => {
+                ? [...fornecedores, ...data.itens.map(x => {
                     return {
                       key: x.idFornecedor,
                       id: x.idFornecedor,
                       nome: x.nome,
                     };
                   })
-                : [];
+                ]: [];
       
               setSuppliers(nextSuppliers);
           };
