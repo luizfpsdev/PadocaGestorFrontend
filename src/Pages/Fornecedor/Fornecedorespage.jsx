@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import HeaderPage from "../../components/HeaderPages";
 import useStyle from "../../components/Hooks/UseStyle";
@@ -20,6 +20,7 @@ const API_URL = (import.meta.env.VITE_API_URL || "https://localhost:7216").repla
 
 const FornecedoresPage = () => {
   const FORM_ID = "fornecedor-form";
+  const PAGE_SIZE = 10;
 
   const auth = useAuth();
   const { S, theme } = useStyle();
@@ -29,8 +30,70 @@ const FornecedoresPage = () => {
   const [search, setSearch] = useState("");
   const [nameOrder, setNameOrder] = useState("asc");
   const [suppliers, setSuppliers] = useState(loadSuppliers);
+  const [isLoadingSuppliers, setIsLoadingSuppliers] = useState(false);
+  const [listError, setListError] = useState("");
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!auth.user?.access_token) return;
+
+    const controller = new AbortController();
+
+    const fetchSuppliers = async () => {
+      setIsLoadingSuppliers(true);
+      setListError("");
+
+      try {
+        const params = new URLSearchParams({
+          pagina: "1",
+          tamanhoPagina: String(PAGE_SIZE),
+          ordem: nameOrder,
+        });
+
+        if (search.trim()) {
+          params.set("nome", search.trim());
+        }
+
+        const response = await fetch(`${API_URL}/Fornecedores?${params.toString()}`, {
+          headers: {
+            Authorization: `Bearer ${auth.user.access_token}`,
+          },
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          const message = await response.text();
+          throw new Error(message || "Erro ao listar fornecedores.");
+        }
+
+        const data = await response.json();
+        const nextSuppliers = Array.isArray(data?.itens)
+          ? data.itens.map(mapApiSupplierToLocal)
+          : [];
+
+        setSuppliers(nextSuppliers);
+        saveSuppliers(nextSuppliers);
+      } catch (error) {
+        if (error.name === "AbortError") return;
+
+        console.error("Erro ao carregar fornecedores:", error);
+        setListError(
+          error instanceof Error && error.message
+            ? error.message
+            : "Nao foi possivel carregar os fornecedores.",
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoadingSuppliers(false);
+        }
+      }
+    };
+
+    fetchSuppliers();
+
+    return () => controller.abort();
+  }, [auth.user?.access_token, nameOrder, search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,7 +136,10 @@ const FornecedoresPage = () => {
         }
 
         const createdSupplier = mapApiSupplierToLocal(await response.json());
-        const nextSuppliers = [createdSupplier, ...suppliers];
+        const nextSuppliers = [createdSupplier, ...suppliers].sort((a, b) => {
+          const compare = a.name.localeCompare(b.name, "pt-BR");
+          return nameOrder === "asc" ? compare : compare * -1;
+        });
 
         setSuppliers(nextSuppliers);
         saveSuppliers(nextSuppliers);
@@ -95,32 +161,44 @@ const FornecedoresPage = () => {
   };
 
   const filteredSuppliers = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
-    const visibleSuppliers = suppliers.filter((supplier) => {
-      if (!normalizedSearch) return true;
-
-      const searchableFields = [
-        supplier.name,
-        supplier.contact,
-        supplier.email,
-        supplier.city,
-      ];
-
-      return searchableFields.some((field) =>
-        field?.toLowerCase().includes(normalizedSearch),
-      );
-    });
-
-    return visibleSuppliers.sort((a, b) => {
+    return [...suppliers].sort((a, b) => {
       const compare = a.name.localeCompare(b.name, "pt-BR");
       return nameOrder === "asc" ? compare : compare * -1;
     });
-  }, [nameOrder, search, suppliers]);
+  }, [nameOrder, suppliers]);
 
-  const handleDelete = (selectedSupplier) => {
-    const nextSuppliers = suppliers.filter((item) => item.id !== selectedSupplier.id);
-    setSuppliers(nextSuppliers);
-    saveSuppliers(nextSuppliers);
+  const handleDelete = async (selectedSupplier) => {
+    if (!auth.user?.access_token) {
+      setListError("Nao foi possivel autenticar o usuario para excluir o fornecedor.");
+      return;
+    }
+
+    try {
+      setListError("");
+
+      const response = await fetch(`${API_URL}/Fornecedores/${selectedSupplier.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${auth.user.access_token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || "Erro ao excluir fornecedor.");
+      }
+
+      const nextSuppliers = suppliers.filter((item) => item.id !== selectedSupplier.id);
+      setSuppliers(nextSuppliers);
+      saveSuppliers(nextSuppliers);
+    } catch (error) {
+      console.error("Erro ao excluir fornecedor:", error);
+      setListError(
+        error instanceof Error && error.message
+          ? error.message
+          : "Nao foi possivel excluir o fornecedor.",
+      );
+    }
   };
 
   const handleCreate = () => {
@@ -175,6 +253,21 @@ const FornecedoresPage = () => {
           nameOrder={nameOrder}
           setNameOrder={setNameOrder}
         />
+        {listError && (
+          <div
+            style={{
+              margin: "0 22px 12px",
+              padding: "10px 12px",
+              borderRadius: 10,
+              background: `${theme.rose}22`,
+              border: `1px solid ${theme.rose}44`,
+              color: theme.text,
+              fontSize: 13,
+            }}
+          >
+            {listError}
+          </div>
+        )}
 
         <div
           style={{
@@ -185,6 +278,16 @@ const FornecedoresPage = () => {
             paddingRight: 22,
           }}
         >
+          {isLoadingSuppliers && (
+            <div style={{ color: theme.muted, fontSize: 13, padding: "8px 0" }}>
+              Carregando fornecedores...
+            </div>
+          )}
+          {!isLoadingSuppliers && filteredSuppliers.length === 0 && (
+            <div style={{ color: theme.muted, fontSize: 13, padding: "8px 0" }}>
+              Nenhum fornecedor encontrado.
+            </div>
+          )}
           {filteredSuppliers.map((supplier) => (
             <FornecedorCard
               key={supplier.id}
