@@ -101,3 +101,30 @@ export const mapFormToSupplier = (formData, existingId) => ({
   document: formData.cnpj.trim(),
   note: formData.observacao.trim(),
 });
+
+export const mapFormToSupplierRequest = (formData) => ({
+  nome: formData.nome.trim(),
+  email: formData.email.trim(),
+  telefone: formData.telefone.trim() || null,
+  endereco: formData.endereco.trim() || null,
+  observacao: formData.observacao.trim() || null,
+  cnpj: formData.cnpj.trim() || null,
+  uf: formData.uf.trim(),
+  cidade: formData.cidade.trim(),
+  contato: formData.contato.trim(),
+  ativo: true,
+});
+
+export const mapApiSupplierToLocal = (supplier) => ({
+  id: String(supplier?.idFornecedor ?? supplier?.id ?? `s-${Date.now()}`),
+  name: supplier?.nome || "",
+  contact: supplier?.contato || "",
+  phone: supplier?.telefone || "",
+  email: supplier?.email || "",
+  city: supplier?.cidade || "",
+  state: supplier?.uf || "",
+  address: supplier?.endereco || "",
+  document: supplier?.cnpj || "",
+  note: supplier?.observacao || "",
+  active: supplier?.ativo ?? true,
+});

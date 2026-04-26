@@ -12,7 +12,7 @@ const bandeiraStyle = {
   flexShrink: 0,
 };
 
-const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
+const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit, isSubmitting = false }) => {
   const { S, theme } = useStyle();
   const [cidades, setCidades] = useState([]);
   const [loadingCidades, setLoadingCidades] = useState(false);
@@ -128,6 +128,8 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
             name="contato"
             value={formData.contato}
             onChange={handleChange}
+            required
+            disabled={isSubmitting}
           />
         </div>
         <br />
@@ -142,6 +144,7 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
             value={formData.nome}
             onChange={handleChange}
             required
+            disabled={isSubmitting}
           />
         </div>
         <br />
@@ -155,6 +158,8 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            required
+            disabled={isSubmitting}
           />
         </div>
 
@@ -173,6 +178,7 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
                 onChange={handleCNPJChange}
                 placeholder="000.000.000-00"
                 required
+                disabled={isSubmitting}
               />
             </div>
             <div style={{ width: "50%" }}>
@@ -185,6 +191,7 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
                 name="telefone"
                 value={formData.telefone}
                 onChange={handleChange}
+                disabled={isSubmitting}
               />
             </div>
           </div>
@@ -200,6 +207,7 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
               <button
                 type="button"
                 onClick={() => setUfMenuOpen((prev) => !prev)}
+                disabled={isSubmitting}
                 style={{
                   ...S.inp,
                   display: "flex",
@@ -291,7 +299,8 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
                 name="cidade"
                 value={formData.cidade}
                 onChange={handleChange}
-                disabled={!formData.uf || loadingCidades}
+                disabled={isSubmitting || !formData.uf || loadingCidades}
+                required
               >
                 <option value="">
                   {!formData.uf
@@ -321,6 +330,7 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
             name="endereco"
             value={formData.endereco}
             onChange={handleChange}
+            disabled={isSubmitting}
           />
         </div>
         <div>
@@ -333,6 +343,7 @@ const FormularioFornecedor = ({ formId, formData, setFormData, onSubmit }) => {
             name="observacao"
             value={formData.observacao}
             onChange={handleChange}
+            disabled={isSubmitting}
           />
         </div>
       </form>

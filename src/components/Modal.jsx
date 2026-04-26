@@ -1,7 +1,7 @@
 import React from "react";
 import useStyle from "./Hooks/UseStyle";
 
-const Modal = ({ title, onClose, children, wide, formId }) => {
+const Modal = ({ title, onClose, children, wide, formId, submitDisabled = false, submitLabel = "Salvar" }) => {
   const { S } = useStyle();
 
   return (
@@ -20,11 +20,11 @@ const Modal = ({ title, onClose, children, wide, formId }) => {
         <div
           style={S.footerModal}
         >
-          <button style={S.btnOutline} onClick={onClose}>
+          <button style={S.btnOutline} onClick={onClose} disabled={submitDisabled}>
             Cancelar
           </button>
-          <button style={S.btnPrimary} type="submit" form={formId}>
-            Salvar
+          <button style={S.btnPrimary} type="submit" form={formId} disabled={submitDisabled}>
+            {submitLabel}
           </button>
         </div>
       </div>
