@@ -28,15 +28,31 @@ const FornecedoresPage = () => {
   const [editingSupplierId, setEditingSupplierId] = useState(null);
   const [formData, setFormData] = useState(createEmptySupplierForm);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [nameOrder, setNameOrder] = useState("asc");
   const [suppliers, setSuppliers] = useState(loadSuppliers);
   const [isLoadingSuppliers, setIsLoadingSuppliers] = useState(false);
   const [listError, setListError] = useState("");
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const trimmedSearch = search.trim();
+  const shouldSearchApi = trimmedSearch.length === 0 || trimmedSearch.length >= 3;
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 400);
+
+    return () => window.clearTimeout(timeout);
+  }, [search]);
 
   useEffect(() => {
     if (!auth.user?.access_token) return;
+    if (!shouldSearchApi) {
+      setIsLoadingSuppliers(false);
+      setListError("");
+      return;
+    }
 
     const controller = new AbortController();
 
@@ -51,8 +67,8 @@ const FornecedoresPage = () => {
           ordem: nameOrder,
         });
 
-        if (search.trim()) {
-          params.set("nome", search.trim());
+        if (debouncedSearch.trim()) {
+          params.set("nome", debouncedSearch.trim());
         }
 
         const response = await fetch(`${API_URL}/Fornecedores?${params.toString()}`, {
@@ -93,7 +109,7 @@ const FornecedoresPage = () => {
     fetchSuppliers();
 
     return () => controller.abort();
-  }, [auth.user?.access_token, nameOrder, search]);
+  }, [auth.user?.access_token, debouncedSearch, nameOrder, shouldSearchApi]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -266,6 +282,17 @@ const FornecedoresPage = () => {
             }}
           >
             {listError}
+          </div>
+        )}
+        {!listError && trimmedSearch.length > 0 && trimmedSearch.length < 3 && (
+          <div
+            style={{
+              margin: "0 22px 12px",
+              color: theme.muted,
+              fontSize: 13,
+            }}
+          >
+            Digite pelo menos 3 caracteres para pesquisar fornecedores.
           </div>
         )}
 
