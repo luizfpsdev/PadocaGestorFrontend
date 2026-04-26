@@ -9,6 +9,7 @@ import {
 } from "recharts";
 
 import KpiCard from "./KpiCard";
+import { loadSuppliers } from "../Fornecedor/fornecedoresStorage";
 
 import formaterReal, {  fmtK, pct } from "../../components/Utils/formaterReal";
 
@@ -16,6 +17,7 @@ import { uid, dAgo } from "../../components/Utils/helpers";
 
 const DashboardPage = () => {
   const { S,theme } = useStyle();
+  const suppliersCount = loadSuppliers().length;
 
   let TT = { background: theme.surface, border: `1px solid ${theme.border2}`, borderRadius: 8, color: theme.text, fontSize: 12 };
 
@@ -311,6 +313,12 @@ function priceTimelineFromHistory(ings, history, calcValue) {
                 val: fmtK(100),
                 color: theme.rose,
                 icon: "\u26A1",
+              },
+              {
+                lbl: "Fornecedores Cadastrados",
+                val: suppliersCount,
+                color: theme.blue,
+                icon: "\uD83C\uDFE2",
               },
             ].map((k, i) => (
               <KpiCard key={i} {...k} />
