@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import useStyle from "../../components/Hooks/UseStyle";
 import formaterReal from "../../components/Utils/formaterReal";
+import { useAuth } from "react-oidc-context";
 
 const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
   const { S, theme } = useStyle();
+  const [suppliers, setSuppliers] = useState([]);
+  const auth = useAuth();
 
   const categorias = [
     { id: 0, nome: "Selecione a categoria" },
@@ -24,6 +27,49 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
   ];
 
   const fornecedores = [{ id: 0, nome: "Selecione o fornecedor" }];
+
+  const API_URL = (import.meta.env.VITE_API_URL || "https://localhost:7216").replace(/\/$/, "");
+
+
+  useEffect(() => {
+       const fetchSuppliers = async () => {
+
+        //TODO: melhorar e implementar busca no select e exportar para um hook
+
+              const controller = new AbortController();
+          
+              const params = new URLSearchParams({
+                pagina: "1",
+                tamanhoPagina: 99999,
+                ordem: "asc",
+              });
+      
+      
+              const response = await fetch(`${API_URL}/Fornecedores?${params.toString()}`, {
+                headers: {
+                  Authorization: `Bearer ${auth.user.access_token}`,
+                },
+                signal: controller.signal,
+              });
+      
+      
+              const data = await response.json();
+
+              const nextSuppliers = Array.isArray(data?.itens)
+                ? data.itens.map(x => {
+                    return {
+                      key: x.idFornecedor,
+                      id: x.idFornecedor,
+                      nome: x.nome,
+                    };
+                  })
+                : [];
+      
+              setSuppliers(nextSuppliers);
+          };
+      
+          fetchSuppliers();
+    },[]);
 
   const margin = () => {
     const custo = formData.precoIngrediente;
@@ -139,7 +185,7 @@ const FormularioProduto = ({ formId, formData, setFormData, onSubmit }) => {
               value={formData.fornecedor}
               onChange={handleChange}
             >
-              {fornecedores.map((fornecedor) => (
+              {suppliers.map((fornecedor) => (
                 <option key={fornecedor.id} value={String(fornecedor.id)}>
                   {fornecedor.nome}
                 </option>
