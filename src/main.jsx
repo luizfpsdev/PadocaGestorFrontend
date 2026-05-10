@@ -6,6 +6,7 @@ import { AuthProvider } from "react-oidc-context";
 import { WebStorageStateStore } from "oidc-client-ts";
 import { Provider } from "./components/ui/provider";
 import { ThemeProvider } from "./components/Theme/ThemeProvider.jsx";
+import { ToastProvider } from "./components/Toast/ToastProvider.jsx";
 
 const oidcConfig = {
   authority: import.meta.env.VITE_KEYCLOAK_AUTHORIRY,
@@ -22,11 +23,13 @@ const oidcConfig = {
 createRoot(document.getElementById("root")).render(
   <AuthProvider {...oidcConfig}>
     <Provider>
-      <ThemeProvider>
-        <StrictMode>
-          <App />
-        </StrictMode>
-      </ThemeProvider>
+      <ToastProvider>
+        <ThemeProvider>
+          <StrictMode>
+            <App />
+          </StrictMode>
+        </ThemeProvider>
+      </ToastProvider>
     </Provider>
   </AuthProvider>
 );

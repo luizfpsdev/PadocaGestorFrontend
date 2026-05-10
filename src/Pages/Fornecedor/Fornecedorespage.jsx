@@ -3,6 +3,7 @@ import { useAuth } from "react-oidc-context";
 import HeaderPage from "../../components/HeaderPages";
 import useStyle from "../../components/Hooks/UseStyle";
 import Modal from "../../components/Modal";
+import { useToast } from "../../components/Toast/ToastProvider";
 import BuscaFornecedor from "./BuscaFornecedor";
 import FornecedorCard from "./FornecedorCard";
 import FormularioFornecedor from "./FormularioFornecedor";
@@ -34,6 +35,7 @@ const FornecedoresPage = () => {
 
   const auth = useAuth();
   const { S, theme } = useStyle();
+  const toast = useToast();
   const [openModal, setOpenModal] = useState(false);
   const [editingSupplierId, setEditingSupplierId] = useState(null);
   const [formData, setFormData] = useState(createEmptySupplierForm);
@@ -154,11 +156,19 @@ const FornecedoresPage = () => {
 
     if (!formData.uf || !formData.cidade || !formData.email || !formData.contato) {
       setSubmitError("Preencha contato, e-mail, UF e cidade para cadastrar o fornecedor.");
+      toast.warning(
+        "Campos obrigatorios",
+        "Preencha contato, e-mail, UF e cidade antes de salvar o fornecedor.",
+      );
       return;
     }
 
     if (!editingSupplierId && !auth.user?.access_token) {
       setSubmitError("Nao foi possivel autenticar o usuario para cadastrar o fornecedor.");
+      toast.error(
+        "Falha na autenticacao",
+        "Nao foi possivel autenticar o usuario para cadastrar o fornecedor.",
+      );
       return;
     }
 
@@ -173,6 +183,7 @@ const FornecedoresPage = () => {
 
         setSuppliers(nextSuppliers);
         saveSuppliers(nextSuppliers);
+        toast.success("Fornecedor atualizado", "As alteracoes foram salvas com sucesso.");
       } else {
         const response = await fetch(`${API_URL}/Fornecedores`, {
           method: "POST",
@@ -197,6 +208,7 @@ const FornecedoresPage = () => {
         setSuppliers(nextSuppliers);
         setTotalItems((prev) => prev + 1);
         saveSuppliers(nextSuppliers);
+        toast.success("Fornecedor cadastrado", "O novo fornecedor foi salvo com sucesso.");
       }
 
       setFormData(createEmptySupplierForm());
@@ -204,11 +216,13 @@ const FornecedoresPage = () => {
       setOpenModal(false);
     } catch (error) {
       console.error("Erro ao salvar fornecedor:", error);
-      setSubmitError(
+      const message =
         error instanceof Error && error.message
           ? error.message
-          : "Nao foi possivel salvar o fornecedor.",
-      );
+          : "Nao foi possivel salvar o fornecedor.";
+
+      setSubmitError(message);
+      toast.error("Erro ao salvar fornecedor", message);
     } finally {
       setIsSubmitting(false);
     }
@@ -219,6 +233,10 @@ const FornecedoresPage = () => {
   const handleDelete = async (selectedSupplier) => {
     if (!auth.user?.access_token) {
       setListError("Nao foi possivel autenticar o usuario para excluir o fornecedor.");
+      toast.error(
+        "Falha na autenticacao",
+        "Nao foi possivel autenticar o usuario para excluir o fornecedor.",
+      );
       return;
     }
 
@@ -241,17 +259,19 @@ const FornecedoresPage = () => {
       setSuppliers(nextSuppliers);
       setTotalItems((prev) => Math.max(0, prev - 1));
       saveSuppliers(nextSuppliers);
+      toast.success("Fornecedor excluido", "O fornecedor foi removido com sucesso.");
 
       if (nextSuppliers.length === 0 && currentPage > 1) {
         setCurrentPage((prev) => prev - 1);
       }
     } catch (error) {
-      console.error("Erro ao excluir fornecedor:", error);
-      setListError(
+      const message =
         error instanceof Error && error.message
           ? error.message
-          : "Nao foi possivel excluir o fornecedor.",
-      );
+          : "Nao foi possivel excluir o fornecedor.";
+
+      setListError(message);
+      toast.error("Erro ao excluir fornecedor", message);
     }
   };
 
