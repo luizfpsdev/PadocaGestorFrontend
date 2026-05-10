@@ -106,7 +106,6 @@ const FornecedoresPage = () => {
       } catch (error) {
         if (error.name === "AbortError") return;
 
-        console.error("Erro ao carregar fornecedores:", error);
         setListError(
           error instanceof Error && error.message
             ? error.message
@@ -277,26 +276,10 @@ const FornecedoresPage = () => {
           nameOrder={nameOrder}
           setNameOrder={setNameOrder}
         />
-        {listError && (
-          <div
-            style={{
-              margin: "0 22px 12px",
-              padding: "10px 12px",
-              borderRadius: 10,
-              background: `${theme.rose}22`,
-              border: `1px solid ${theme.rose}44`,
-              color: theme.text,
-              fontSize: 13,
-            }}
-          >
-            {listError}
-          </div>
-        )}
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px,  max-content))",
             gap: 10,
             paddingLeft: 22,
             paddingRight: 22,
