@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import HeaderPage from "../../components/HeaderPages";
 import useStyle from "../../components/Hooks/UseStyle";
@@ -30,7 +30,7 @@ const SEARCH_DEBOUNCE_MS = 700;
 
 const FornecedoresPage = () => {
   const FORM_ID = "fornecedor-form";
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 20;
 
   const auth = useAuth();
   const { S, theme } = useStyle();
@@ -45,6 +45,9 @@ const FornecedoresPage = () => {
   const [listError, setListError] = useState("");
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
   const trimmedSearch = search.trim();
   const shouldSearchApi = trimmedSearch.length === 0 || trimmedSearch.length >= 3;
   const hasActiveSearch = debouncedSearch.trim().length >= 3;
@@ -58,10 +61,17 @@ const FornecedoresPage = () => {
   }, [search]);
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch, nameOrder]);
+
+  useEffect(() => {
     if (!auth.user?.access_token) return;
     if (!shouldSearchApi) {
       setIsLoadingSuppliers(false);
       setListError("");
+      setSuppliers([]);
+      setTotalItems(0);
+      setTotalPages(1);
       return;
     }
 
@@ -73,7 +83,7 @@ const FornecedoresPage = () => {
 
       try {
         const params = new URLSearchParams({
-          pagina: "1",
+          pagina: String(currentPage),
           tamanhoPagina: String(PAGE_SIZE),
           ordem: nameOrder,
         });
@@ -100,17 +110,32 @@ const FornecedoresPage = () => {
         const nextSuppliers = Array.isArray(data?.itens)
           ? data.itens.map(mapApiSupplierToLocal)
           : [];
+        const nextTotalItems = Number(data?.totalItens ?? data?.totalItems ?? nextSuppliers.length);
+        const nextTotalPages = Math.max(
+          1,
+          Number(
+            data?.totalPaginas ??
+              data?.totalPages ??
+              Math.ceil(nextTotalItems / PAGE_SIZE) ??
+              1,
+          ),
+        );
 
         setSuppliers(nextSuppliers);
+        setTotalItems(nextTotalItems);
+        setTotalPages(nextTotalPages);
         saveSuppliers(nextSuppliers);
       } catch (error) {
         if (error.name === "AbortError") return;
 
         setListError(
           error instanceof Error && error.message
-            ? error.message
-            : "Nao foi possivel carregar os fornecedores.",
+          ? error.message
+          : "Nao foi possivel carregar os fornecedores.",
         );
+        setSuppliers([]);
+        setTotalItems(0);
+        setTotalPages(1);
       } finally {
         if (!controller.signal.aborted) {
           setIsLoadingSuppliers(false);
@@ -121,7 +146,7 @@ const FornecedoresPage = () => {
     fetchSuppliers();
 
     return () => controller.abort();
-  }, [auth.user?.access_token, debouncedSearch, nameOrder, shouldSearchApi]);
+  }, [auth.user?.access_token, currentPage, debouncedSearch, nameOrder, shouldSearchApi]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -164,12 +189,13 @@ const FornecedoresPage = () => {
         }
 
         const createdSupplier = mapApiSupplierToLocal(await response.json());
-        const nextSuppliers = [createdSupplier, ...suppliers].sort((a, b) => {
+        const nextSuppliers = [createdSupplier, ...suppliers].slice(0, PAGE_SIZE).sort((a, b) => {
           const compare = a.name.localeCompare(b.name, "pt-BR");
           return nameOrder === "asc" ? compare : compare * -1;
         });
 
         setSuppliers(nextSuppliers);
+        setTotalItems((prev) => prev + 1);
         saveSuppliers(nextSuppliers);
       }
 
@@ -188,7 +214,7 @@ const FornecedoresPage = () => {
     }
   };
 
-  const showEmptyState = !isLoadingSuppliers && suppliers.length === 0;
+  const showEmptyState = !isLoadingSuppliers && !listError && suppliers.length === 0;
 
   const handleDelete = async (selectedSupplier) => {
     if (!auth.user?.access_token) {
@@ -213,7 +239,12 @@ const FornecedoresPage = () => {
 
       const nextSuppliers = suppliers.filter((item) => item.id !== selectedSupplier.id);
       setSuppliers(nextSuppliers);
+      setTotalItems((prev) => Math.max(0, prev - 1));
       saveSuppliers(nextSuppliers);
+
+      if (nextSuppliers.length === 0 && currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+      }
     } catch (error) {
       console.error("Erro ao excluir fornecedor:", error);
       setListError(
@@ -280,12 +311,27 @@ const FornecedoresPage = () => {
         <div
           style={{
             display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 260px))",
             gap: 10,
             paddingLeft: 22,
             paddingRight: 22,
           }}
         >
-     
+          {listError && (
+            <div
+              style={{
+                ...S.card,
+                gridColumn: "1 / -1",
+                padding: "12px 14px",
+                border: `1px solid ${theme.rose}44`,
+                background: `${theme.rose}18`,
+                color: theme.text,
+                fontSize: 13,
+              }}
+            >
+              {listError}
+            </div>
+          )}
           {showEmptyState && (
             <div
               style={{
@@ -414,6 +460,46 @@ const FornecedoresPage = () => {
             />
           ))}
         </div>
+        {totalItems > 0 && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+              padding: "16px 22px 0",
+              flexWrap: "wrap",
+            }}
+          >
+            <div style={{ color: theme.muted, fontSize: 13 }}>
+              Pagina {currentPage} de {totalPages} - ate {PAGE_SIZE} cards por pagina
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button
+                style={{
+                  ...S.btnSec,
+                  opacity: currentPage === 1 ? 0.5 : 1,
+                  cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                }}
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+              >
+                Anterior
+              </button>
+              <button
+                style={{
+                  ...S.btnSec,
+                  opacity: currentPage >= totalPages ? 0.5 : 1,
+                  cursor: currentPage >= totalPages ? "not-allowed" : "pointer",
+                }}
+                onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                disabled={currentPage >= totalPages}
+              >
+                Proxima
+              </button>
+            </div>
+          </div>
+        )}
         {openModal && (
           <Modal
             title={editingSupplierId ? "Editar Fornecedor" : "Novo Fornecedor"}

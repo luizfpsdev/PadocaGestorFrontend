@@ -9,6 +9,8 @@ const FornecedorCard = ({ supplier, onEdit, onDelete }) => {
     <div
       style={{
         ...S.card,
+        width: "100%",
+        maxWidth: 260,
         padding: "14px 14px 12px",
       }}
     >
